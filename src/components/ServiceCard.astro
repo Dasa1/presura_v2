@@ -10,7 +10,7 @@ interface Props {
 const { service } = Astro.props;
 ---
 
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="bg-white rounded-xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between card-hover interactive-transition">
   <div class="space-y-3">
     <h3 class="text-xl font-bold text-slate-900">{service.title}</h3>
     <p class="text-sm text-slate-600 line-clamp-3">{service.shortDescription}</p>

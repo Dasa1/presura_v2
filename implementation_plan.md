@@ -1,355 +1,203 @@
-# Master Implementation Plan — Presura Website
+# Implementation Plan: Demo-Ready & Provisioning-Ready Preparation
 
-This document outlines the Master Implementation Plan and task sequencing review for the **Presura** lead-generation website. It establishes the design layout, stack configuration, phases, task dependencies, and verification strategy under the approved AI Process Pack v1.4 workflow.
+This plan outlines the scope, visual design parameters, asset lists, verification rules, and provisioning steps required to transition the **Presura** local technical services website into a **Demo-Ready** and **Provisioning-Ready** state.
 
----
-
-## Approved Decisions & Hard Boundaries
-
-All choices from the Human Decision Review have been approved. These are the active constraints for this project:
-
-- **WEB-DEC-006 (Lead Data Retention):** Store minimal inquiry/lead records in Supabase for **6 months**, then delete or anonymize them unless converted into an active business/customer record.
-- **WEB-DEC-008 (Analytics/Privacy):** Plausible-style cookie-less/privacy-friendly analytics first. Do not add GA4, GTM, Meta Pixel, or marketing cookies unless explicitly approved later.
-- **WEB-DEC-010 (Public business NAP/contact):** Use placeholders for all public business NAP/contact/schema values until final owner-approved production values are provided.
-- **WEB-DEC-011 (Media/Proof Assets):** Placeholders are allowed during build, but real work photos/proof/trust assets must replace launch-critical placeholders before final launch.
-- **WEB-DEC-012 (Local page content rule):** Create only **2-3 local landing pages** in the MVP, and only when each has unique local proof/value (no boilerplate-swapped duplicates).
-- **WEB-DEC-013 (Pricing transparency):** Use ranges or "from" prices with clear variable caveats where pricing is shown.
-- **WEB-DEC-014 (Sanity admin access posture):** Require 2FA where available, but do not block launch solely if a provider does not support 2FA. Enforce least privilege, strong passwords, no exposed write tokens, and safe token handling.
-- **WEB-DEC-015 (Performance policy):** Numeric Core Web Vitals values remain implementation targets, not automatic launch blockers.
+> [!IMPORTANT]
+> **Production public launch remains NOT APPROVED.** This plan focuses exclusively on local and staging/preview configurations for owner demonstration and preparation, without activating indexing, real schemas, or live integrations.
+>
+> **Do not proceed with execution until receiving explicit approval.**
 
 ---
 
-## Required Implementation Corrections & Constraints
+## 1. Active Workspace & Git Branch Confirmation
 
-### 1. Public Business Data Placeholder Rule
-- Use **"Presura"** as the project/site placeholder name.
-- **Do not** use "Presura d.o.o.", final phone, address, hours, email, or schema values in the public UI, metadata, JSON-LD, or documentation until final legal values are approved. All these must remain placeholders.
-
-### 2. Package Manager and Dependency Installation Posture
-- Before running `npm install` or choosing a package manager (`npm`/`pnpm`/`yarn`), inspect the repository root directory.
-- If no lockfile or package manager config exists, propose a choice to the owner and wait for approval.
-- **Do not** install any dependencies or run dependency-changing commands without explicit approval.
-
-### 3. Sanity Connection & Dataset Posture
-- Phase 2 may implement local Sanity schema files and local Studio configurations.
-- **Do not** deploy the schema, connect production Sanity, create datasets, or use real Sanity API tokens until environmental variables and account details are explicitly approved.
-
-### 4. Supabase Setup & Migrations Rule
-- **Do not** run SQL migrations, database setup scripts, or destructive database commands without explicit approval.
-- Row-Level Security (RLS) policies, service role token isolation, `retention_delete_after` triggers, and public/private key separation must be fully verified and documented before claiming PASS.
-
-### 5. Proof Assets and Content Policy
-- Use placeholders where final proof assets, real work photos, testimonials, or public business copy are not approved.
-- Do not claim real proof is present unless the assets are provided and approved. Missing launch-critical proof must be marked **NEEDS HUMAN APPROVAL / NOT VERIFIED**.
-
-### 6. Mandatory Codex Review Gates
-- **Phase 4** (Forms, DB, Turnstile, and Resend integrations): Codex review is **mandatory** after this phase.
-- **Phase 5** (Content Seeding & Hardening): Codex review is **recommended** before final deployment/handover if accessibility, performance, SEO, or content changes are significant.
-- **Phase 6** (Deployment, Webhooks, & Handover Pack): Codex review is **mandatory** after this phase.
+- **Only Source of Truth:** `d:\Presura_v2`
+- **Active Working Branch:** `demo-visual-polish` (confirmed via `git branch`)
+- **Baseline References:** Branch `main` and tag `local-mvp-handover-complete` represent the verified stable MVP baseline. They will not be modified or committed to.
+- **State Check:** No source, configuration, or documentation files have been modified prior to the approval of this plan.
 
 ---
 
-## 1. Product Understanding
+## 2. Status Definitions & Boundaries
 
-- **What We Are Building:** A fast, high-conversion, SEO-ready public website for the **Presura** local technical services project.
-- **Target Audience:** Homeowners and property owners in the Osijek/Bilje region in Croatia seeking heating, boiler servicing, water treatment, or heat pump installations.
-- **MVP Goals:** 
-  1. Catch and convert urgent mobile users needing emergency boiler/heating repairs (frictionless tap-to-call flow).
-  2. Educate and capture high-consideration leads researching expensive, complex installations (heat pumps, radiator flushing) via a secure inquiry form.
-  3. Provide a structured, headless CMS (Sanity) setup for editors to update content safely without code changes.
+### A. Demo-Ready State
+A secure presentation-ready state to demonstrate website aesthetics and functionality to the future owner:
+- **Visual Polish:** Fully styled layout with unified typography and professional visual assets.
+- **Placeholder-Safe:** All public business values, phone numbers, emails, addresses, hours, and legal identifiers remain abstract placeholders.
+- **Preview Form Disabled (No Fake Success):** On Vercel Preview or any owner-facing demo, the inquiry form fields and submit button must be visibly and functionally disabled. No fake success state is simulated, and no false success screens are shown. Mock lead details are not written to console logs during owner-facing preview sessions.
+- **No Search Indexing:** Guaranteed via both `robots.txt` (`Disallow: /`) and dynamic `noindex, nofollow` metadata.
+- **No Schema.org Activation:** `schemaEnabled` remains `false`.
+- **Status:** **NOT APPROVED FOR PUBLIC LAUNCH**.
+
+### B. Provisioning-Ready State
+A complete documentation and checklist setup prepared for the transition to production hosting:
+- **Provider Checklist:** Step-by-step registration instructions for Supabase, Resend, Vercel, and Cloudflare Turnstile.
+- **Environment Variables Mapping:** A complete classification of private server-only secrets vs. public client-safe variables.
+- **Owner Access Plan:** Account handover procedures.
+- **Live Integration Plan:** Steps for validating real database insertions, email delivery, and captcha validation.
+- **Status:** No live SaaS provider accounts are connected during this phase. No real API keys are injected.
 
 ---
 
-## 2. Approved Stack Understanding
+## 3. Demo Visual Foundation Polish Scope
 
-| Component | Approved Technology | Usage in Presura MVP |
+The later visual pass will improve the aesthetic quality of the pages to create a conservative, credible, and premium technical-service feel. 
+
+### Allowed Files for Modification
+- `src/styles/global.css` (Colors, layout tokens, global utilities, transitions)
+- `src/layouts/Layout.astro` (Base styling layout, typography loads)
+- `src/components/Header.astro` (Navigation layout, visual consistency)
+- `src/components/Footer.astro` (Footer visual grid and separator borders)
+- `src/components/StickyCTA.astro` (Mobile sticky phone button polish)
+- `src/components/TrustBar.astro` (Alignment and spacing of placeholder badges)
+- `src/components/ServiceCard.astro` (Aesthetic refinement of service blocks, shadows, hovers)
+- `src/components/ProblemCard.astro` (Refinement of problem grids, icons, text contrast)
+- `src/components/InquiryForm.astro` (Field spacing, focus borders, validation color states, CTA button, preview banner)
+- `src/components/analytics/PrivacyAnalytics.astro` (Verify fallback tracking template loads cleanly)
+- `src/components/seo/MetaTags.astro` (Confirm noindex logic is preserved)
+- `src/components/seo/SchemaMarkup.astro` (Verify block logic; no schema activation)
+- `src/pages/index.astro` (Hero layout grid, spacing, container alignment)
+- Selected dynamic templates (`src/pages/usluge/[slug].astro`, `src/pages/lokacije/[slug].astro`, `src/pages/problemi/[slug].astro`) ONLY if required to align responsive vertical spacing.
+
+---
+
+## 4. UI Polish Goals by Area
+
+| Area | MVP Baseline | Visual Polish Goal |
 |---|---|---|
-| **Frontend** | Astro | Renders static pages via SSG for perfect Core Web Vitals (LCP <= 1.5s, CLS 0). Hydrates only interactive components (Turnstile, form UI states) using the "Islands Architecture". |
-| **Styling** | Tailwind CSS v4 | Provides tokenized styling with maximum efficiency, keeping CSS bundle small. Combined with CVA (Class Variance Authority) for accessible button/card states. |
-| **CMS** | Sanity | Serves as the single source of truth for public content. Exposes content through the Sanity API. Schema and configuration implemented in Phase 2. No production connections or tokens deployed until approved. |
-| **Leads DB** | Supabase | Used **exclusively** for inquiry/lead storage. Private leads are posted to a secure database table; public pages NEVER pull content from Supabase. No database commands executed without approval. |
-| **Email** | Resend | Dispatches transactional email notifications to the company email once a lead is successfully saved in Supabase. |
-| **Deployment** | Vercel | Hosts the Astro app, manages environmental variables/secrets, and executes Astro serverless API endpoints (`/api/inquiries`). Rebuilds static pages via Sanity webhooks. |
-| **Anti-Spam** | Cloudflare Turnstile | Validates user interaction server-side before storing inquiries or triggering emails. Assisted by hidden honeypot fields. |
-| **Analytics** | Privacy-Friendly Analytics | Track conversions and UTM traffic using a cookie-less, Plausible-style configuration. Ads/marketing scripts default to blocked. |
+| **Header** | Simple text nav | Subtle glass-like surfaces only (preserving contrast and text readability, avoiding a generic SaaS look), phone placeholder prominence. |
+| **Hero** | Plain text grid | Deep navy backdrop, soft orange-amber accent gradient, professional layout alignment, technical ambience image card. |
+| **CTA Buttons** | Default solid borders | Harmonic color states (primary orange-amber hover states, active transitions), accessible target sizing, prominent interactive indicator. |
+| **Trust Bar** | Centered gray labels | Clean grid border separators, subtle icon fills, balanced mobile wrapping. |
+| **Service Cards** | Bordered boxes | Soft box-shadow, subtle border transitions on hover, optimized layout structure for text readability. |
+| **Problem Cards** | Bold bullet list | Warning-hued accents, custom list bullet designs, clear action routes. |
+| **Inquiry Form** | Standard stacked fields | Visually disabled input state in preview mode, warning notice banner, form container styling (background tint, soft rounded borders), distinct focus rings, readable helper text positions. |
+| **Footer** | Centered copyright text | Multi-column structure, clean gray separators, accessibility links, legal placeholder block. |
+| **Mobile Sticky CTA**| Plain banner | Floating bottom pill with glassmorphism backdrop (subtle surfaces with high accessibility/contrast), phone icon, staying below modal overlays. |
+| **Spacing & Spans** | Standard layout | Fine-tuned margin/padding scale using responsive Tailwind spacing units (`px`, `py`, `gap-` values). |
 
 ---
 
-## 3. MVP Scope
+## 5. Demo Visual Asset Plan
 
-- **Homepage:** Navigation hub featuring service links, problem symptom links, trust badges, and a persistent sticky call CTA on mobile.
-- **Service Pages (Up to 6):** Custom landing pages explaining service benefits, prices, and related problems.
-- **Problem Pages (2-3):** Symptom-focused educational pages routing to the recommended service.
-- **Local Landing Pages (2-3):** Targeted location pages (e.g., Osijek, Bilje) with unique local testimonials and real-work proof.
-- **Pricing & Inquiry Page:** Listing transparent pricing ranges with caveats and housing the contact form.
-- **Works/Case Studies Index:** Displays real work photos and descriptions under approved publication consent.
-- **Contact Page:** Holds primary click-to-call link, map location area, and contact form.
-- **Astro API Endpoint (`POST /api/inquiries`):** Handles form logic, honeypot, Turnstile validation, rate limiting, Supabase storage, and Resend notifications.
-- **Accessibility & SEO Baseline:** WCAG 2.2 AA compliance and correct HVACBusiness JSON-LD structure using "Presura" placeholder.
+To replace the raw image placeholders with realistic demo graphics, we will plan high-quality, professional-grade visual placeholders. These assets are clearly marked as placeholders and do not represent real completed work or real employees.
 
----
+- **Storage Location:** `public/demo-assets/`
+- **Naming Convention:** `demo-[type]-[description].webp`
+- **Alt Text Rule:** Must contain "Demo placeholder: ..." and must **never** imply that the image represents real work, real proof, or a real Presura project.
+- **Classification:** Every asset is documented as a `DEMO_PLACEHOLDER_ASSET` in the asset plan and requires owner approval for replacement or retention.
 
-## 4. Out-of-Scope
+### Proposed Visual Asset List
 
-- Any scheduling, calendar, shift-planning, payroll, or HR dashboard features.
-- SaaS multi-tenant template logic.
-- Integration with external CRMs.
-- Programmatic/mass automated generation of local landing pages.
-- A/B testing frameworks or custom configurators.
-- GA4, GTM, Meta Pixels, or third-party cookies (unless approved post-launch).
-
----
-
-## 5. P0 Launch Blockers
-
-1. **CTA Tap-to-Call Availability:** Sticky call CTA missing, obscured, or using unapproved telephone routing.
-2. **Exposed Secrets:** Write/admin keys for Sanity, Supabase service role keys, Turnstile secrets, or Resend credentials visible in client bundles.
-3. **Contact Form Breakdown:** Inquiry endpoint failing to write to Supabase, sending emails without Turnstile validation, or leaking database errors.
-4. **Thin Local Content:** Locations index/pages published containing cloned copy without unique local proof.
-5. **No Verification Evidence:** Claiming PASS on P0 checklist without accompanying log files, Rich Results test screenshots, or accessibility test evidence.
+| File Name | Intended Page / Usage | Image Theme Description | Alt Text |
+|---|---|---|---|
+| `demo-hero-ambience.webp` | Home / Hero background or side-card | Premium view of a clean technical HVAC boiler setup with gauges in HSL slate/navy styling. | Demo placeholder: Modern heating installation. |
+| `demo-boiler-service.webp` | Service / Boiler servicing card | Close-up of a pressure gauge and copper pipes on a modern gas boiler. | Demo placeholder: Close-up of boiler servicing equipment. |
+| `demo-radiator-flushing.webp` | Service / Radiator flushing card | Flushing valve connection showing clear water maintenance hoses attached to a radiator. | Demo placeholder: Radiator flushing process. |
+| `demo-heat-pump.webp` | Service / Heat pump card | Sleek outdoor heat pump unit standing against a clean wall in a garden setting. | Demo placeholder: Outdoor heat pump unit. |
+| `demo-water-softener.webp` | Service / Water softener card | Compact cabinet water softener unit showing control display. | Demo placeholder: Cabinet water softener system. |
+| `demo-cta-ambience.webp` | Contact / Inquiry Form background | Abstract soft out-of-focus background of copper heating manifolds. | Demo placeholder: Heating manifold pipes. |
+| `demo-tech-pattern.svg` | Hero / Site background decoration | Fine grid lines or architectural schematic overlay pattern. | Technical pattern background overlay. |
+| `demo-technical-piping-ambience.webp`| UI Card / Spacers | Neatly arranged utility pipes and control valves showing a generic technical piping layout (purely illustrative, non-proof). | Demo placeholder: Neatly installed heating pipes. |
 
 ---
 
-## 6. Recommended Phase/Batch Plan
+## 6. Content Safety & Placeholder Boundaries
 
-```mermaid
-graph TD
-    P1[Phase 1: Setup & Baseline] --> P2[Phase 2: Sanity Content & Routing]
-    P2 --> P3[Phase 3: UI Layout & SEO]
-    P3 --> P4[Phase 4: Integrations & API]
-    P4 --> P5[Phase 5: Content Seeding & Hardening]
-    P5 --> P6[Phase 6: Webhooks & Handover]
-```
+### A. Existing Site Context (`presura.hr` Reference)
+The current public site at `https://www.presura.hr/` is used **strictly** for technical service context (verifying which services to list).
+- **Do not** import real addresses, real phone numbers, real emails, OIB, IBAN, legal names ("Presura d.o.o."), Vaillant partnerships, or client reviews into the polish files.
+- All reused facts or brand claims must be explicitly documented and marked as `NEEDS HUMAN APPROVAL` / `NOT VERIFIED`.
 
-### Phase 1: Project Setup & Quality Baseline
-- **Tasks:** TASK-001
-- **Goal:** Initialize Astro, Tailwind CSS v4, linting, type-checking, quality rules, and environment placeholders. Propose package manager and verify repo emptiness.
-- **Dependencies:** None
-- **Files Touched:** `package.json`, `astro.config.mjs`, `tsconfig.json`, `.env.example`, `src/layouts/Layout.astro`, `docs/local-development.md`, `docs/deployment-and-env.md`
-- **Env Vars Needed:** `PUBLIC_SITE_URL` (local dev fallback)
-- **Commands:** `npm run build`, `npm run lint` (or package manager equivalent once approved)
-- **Human Approval Gates:** Package manager approval, dependency install approval.
-- **Verification Evidence:** Build command logs, `.env.example` placeholder diffs.
-- **Build Note:** `/build-notes/phase-01-scaffold-astro-tailwind.md`
-- **Codex Review Required?** Yes.
-- **Commit/Rollback:** Commit baseline structure. Revert: soft reset to initial empty repo.
-
-### Phase 2: Sanity Content & Routing
-- **Tasks:** TASK-002, TASK-003
-- **Goal:** Deploy Sanity schemas locally (Service, Problem, Location, FAQ, Work, PriceItem) and implement corresponding Astro routes.
-- **Dependencies:** Phase 1
-- **Files Touched:** `/sanity/schemas/`, `src/lib/sanity.ts`, `src/pages/index.astro`, `src/pages/usluge/index.astro`, `src/pages/usluge/[slug].astro`, `src/pages/problemi/index.astro`, `src/pages/problemi/[slug].astro`, `src/pages/lokacije/index.astro`, `src/pages/lokacije/[slug].astro`, `src/pages/cjenik.astro`, `src/pages/radovi/index.astro`, `/docs/cms-editor-guide.md`, `/docs/content-update-guide.md`
-- **Env Vars Needed:** `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `PUBLIC_SANITY_API_VERSION` (Local only; no production tokens/deployment until approved)
-- **Commands:** local Studio startup, query checks.
-- **Human Approval Gates:** Sanity local schema check, route structure review.
-- **Verification Evidence:** Local Sanity query logs, empty state fallback screenshots.
-- **Build Note:** `/build-notes/phase-02-sanity-schemas-routes.md`
-- **Codex Review Required?** Yes.
-- **Commit/Rollback:** Revert router setup if schema mapping breaks page generation.
-
-### Phase 3: UI Design System & SEO Metadata
-- **Tasks:** TASK-004, TASK-005
-- **Goal:** Design clean responsive components (Sticky Mobile CTA, Trust Bar, Cards, Price Anchors) and inject rich SEO elements (JSON-LD metadata, sitemap, robots using "Presura" placeholder).
-- **Dependencies:** Phase 2
-- **Files Touched:** `src/components/Navigation.astro`, `src/components/StickyCallCTA.astro`, `src/components/TrustBar.astro`, `src/components/ServiceCard.astro`, `src/components/SEO.astro`, `astro.config.mjs` (sitemap plugins), `/docs/seo-maintenance-guide.md`
-- **Env Vars Needed:** `PUBLIC_SITE_URL`
-- **Commands:** `npm run build`
-- **Human Approval Gates:** Mobile sticky layout test, HVACBusiness schema schema validation.
-- **Verification Evidence:** Rich Results Testing tool screenshot, keyboard focus outline checks.
-- **Build Note:** `/build-notes/phase-03-ui-seo.md`
-- **Codex Review Required?** No.
-- **Commit/Rollback:** CSS revert if Tailwind rules clash.
-
-### Phase 4: Integrations & API (Supabase, Resend, Turnstile, Analytics)
-- **Tasks:** TASK-006, TASK-007, TASK-008, TASK-009
-- **Goal:** Setup Supabase `inquiries` table with 6-month retention, write the secure `/api/inquiries` form endpoint with Turnstile check, link to Resend, and inject Plausible-style tracking.
-- **Dependencies:** Phase 3
-- **Files Touched:** `src/pages/api/inquiries.ts`, `src/components/InquiryForm.astro`, Supabase SQL schemas, `/docs/lead-management-guide.md`, `/docs/security-privacy-handover.md`, `/docs/deployment-and-env.md`
-- **Env Vars Needed:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `INQUIRY_RECIPIENT_EMAIL`, `TURNSTILE_SECRET_KEY`, `PUBLIC_TURNSTILE_SITE_KEY`, `PUBLIC_ANALYTICS_DOMAIN`
-- **Commands:** None without explicit approval.
-- **Human Approval Gates:** DB setup/migrations approval, RLS verification, Turnstile test bypass check.
-- **Verification Evidence:** Redacted API response, Supabase database table record, Resend test email receipt.
-- **Build Note:** `/build-notes/phase-04-integrations.md`
-- **Codex Review Required?** **Yes (Mandatory Gate).**
-- **Commit/Rollback:** Disable API router endpoints or fall back to staging variables.
-
-### Phase 5: Content Seeding & Hardening
-- **Tasks:** TASK-011, TASK-012
-- **Goal:** Seed 6 services, 2-3 problems, 2-3 locations with unique local proof placeholders, verify sitemaps, and run accessibility/performance audits.
-- **Dependencies:** Phase 4
-- **Status:** Planning phase completed. Plan generated at [phase-05-implementation-plan.md](file:///d:/Presura_v2/implementation-plans/phase-05-implementation-plan.md).
-- **Files Touched/Modified:**
-  - `src/sanity/seed.json` (Sandbox mock data)
-  - `src/layouts/Layout.astro` (A11y landmarks, skip links, contrast, meta fallbacks)
-  - `src/components/InquiryForm.astro` (A11y labels, dynamic errors, aria tags)
-  - `src/components/Header.astro`, `src/components/Footer.astro`, `src/components/StickyCTA.astro` (Layout A11y, phone wrapper parameters)
-  - `src/styles/global.css` (Focus-visible ring styling, skip-link visible state, reduced motion rules)
-  - `src/pages/**/*.astro` (Single H1 compliance, semantic markup structure)
-  - `src/pages/sitemap.xml.ts` (Dynamic exclude of unpublished/drafts and thin local landing pages)
-  - `docs/*.md` (Maintenance guides, CMS workflows, content replacement guidelines)
-- **Env Vars Needed:** None new (uses existing `PUBLIC_SITE_URL` for sitemap canonical tests)
-- **Commands:** 
-  - `pnpm run build`
-  - `pnpm run preview`
-- **Human Approval Gates:**
-  - `NEEDS HUMAN APPROVAL`: Final public business NAP/contact values.
-  - `NEEDS HUMAN APPROVAL`: Real customer testimonials, reviews, and project photos.
-  - `NEEDS HUMAN APPROVAL`: Automated tool installation for Lighthouse audits.
-- **Verification Evidence:**
-  - `/verification/TASK-011.md` (Seeded records check, sitemap audit, no real private customer data confirmation)
-  - `/verification/TASK-012.md` (Keyboard focus tests, color contrast logs, Lighthouse targets)
-- **Build Note:** `/build-notes/phase-05-seed-hardening.md`
-- **Codex Review Required?** Recommended before proceeding to final deployment.
-- **Commit/Rollback:** Revert changes to `seed.json`, Astro layout/components, and global stylesheets.
-
-
-### Phase 6: Webhooks & Handover
-- **Tasks:** TASK-010, TASK-013
-- **Goal:** Prepare Vercel hosting configurations, document Sanity content update webhooks, build final verification evidence register, and verify owner handover documentation.
-- **Dependencies:** Phase 5
-- **Status:** Planning phase completed. Plan generated at [phase-06-implementation-plan.md](file:///d:/Presura_v2/implementation-plans/phase-06-implementation-plan.md).
-- **Files Touched/Modified:**
-  - `verification/evidence-register.md` (Evidence tracking)
-  - `docs/*.md` (All guides, owners manual, change logs, handovers)
-- **Env Vars Needed:**
-  - `PUBLIC_SITE_URL` (Public/Client-Safe)
-  - `PUBLIC_TURNSTILE_SITE_KEY` (Public/Client-Safe)
-  - `PUBLIC_ANALYTICS_DOMAIN` (Public/Client-Safe)
-  - `SUPABASE_URL` (Private/Server-Only)
-  - `SUPABASE_SERVICE_ROLE_KEY` (Private/Server-Only)
-  - `RESEND_API_KEY` (Private/Server-Only)
-  - `RESEND_FROM_EMAIL` (Private/Server-Only)
-  - `INQUIRY_RECIPIENT_EMAIL` (Private/Server-Only)
-  - `TURNSTILE_SECRET_KEY` (Private/Server-Only)
-- **Commands:**
-  - `pnpm run build`
-  - `pnpm run preview`
-- **Human Approval Gates:**
-  - `NEEDS HUMAN APPROVAL`: Live production environment Vercel deployment.
-  - `NEEDS HUMAN APPROVAL`: Live Supabase migration execution and API keys config.
-  - `NEEDS HUMAN APPROVAL`: Sanity webhook dashboard creation.
-  - `NEEDS HUMAN APPROVAL`: Domain DNS mappings and indexing robots configuration.
-- **Verification Evidence:**
-  - `/verification/TASK-010.md` (Webhook trigger schema, fallback guide, variables register)
-  - `/verification/TASK-013.md` (Redacted checks log, final launch readiness checklists)
-- **Build Note:** `/build-notes/phase-06-deployment-verification-handover.md`
-- **Codex Review Required?** **Yes (Mandatory Gate).**
-- **Commit/Rollback:** Redeploy Vercel to a previous stable preview or mock build.
+### B. Confirmed Abstract Placeholders
+The codebase will continue to use the following safe tokens:
+- `PHONE_PLACEHOLDER` (UI/Schema)
+- `EMAIL_PLACEHOLDER` (UI/Schema)
+- `ADDRESS_PLACEHOLDER` (UI/Schema)
+- `HOURS_PLACEHOLDER` (UI/Schema)
+- `RATING_PLACEHOLDER` (Reviews / Testimonials)
+- `REVIEW_COUNT_PLACEHOLDER` (Reviews / Testimonials)
+- `LOCAL_CONTEXT_PLACEHOLDER_*_NEEDS_VERIFICATION` (Local landing pages)
+- `LOCAL_PROOF_PLACEHOLDER_*_NEEDS_REAL_DATA` (Local landing pages)
 
 ---
 
-## 7. Task Dependencies
+## 7. Quality Preservation Plans
 
-| Task ID | Direct Dependencies | Requirements Covered | Source Blueprints / Docs | Touched Areas / Files | Requires Secrets? | Human Approval Gates? | Codex Review? |
-|---|---|---|---|---|---|---|---|
-| **TASK-001** | None | REQ-DEVOPS-001, REQ-TEST-001 | Intake, Roadmap, Env Spec | `package.json`, layout, baseline configs | No | Baseline & Package Manager approval | Yes |
-| **TASK-002** | TASK-001 | REQ-PROD-003A, REQ-PROD-003B | CMS Spec, Data Contract | Sanity schemas & Studio setup | No | Schema approval (Local configuration only) | Yes |
-| **TASK-003** | TASK-001, TASK-002 | REQ-PROD-001, REQ-PROD-002, REQ-PROD-003A | Page Blueprints, Data Contract | Pages directory, Sanity helper logic | No | Route checks | Yes |
-| **TASK-004** | TASK-001, TASK-003 | REQ-PROD-001, REQ-UI-001, REQ-A11Y-001, REQ-PERF-001 | Component Spec, UX Spec | Components (Sticky CTA, trust bar) | No | Mobile UX review | No |
-| **TASK-005** | TASK-003 | REQ-SEO-001, REQ-PROD-002 | SEO Spec, Page Blueprints | HTML headers, sitemaps, robots.txt | No | Rich Schema validation | No |
-| **TASK-006** | TASK-001 | REQ-FORM-001, REQ-PRIV-001 | Form Spec, Security Spec | Supabase database migrations | Yes | Migrations / Setup approval | Yes |
-| **TASK-007** | TASK-006 | REQ-SEC-001, REQ-FORM-001, REQ-FORM-002, REQ-PRIV-001 | Form Spec, Security Spec | `api/inquiries.ts`, Resend, Turnstile | Yes | Security review / API keys approval | Yes (Mandatory Gate) |
-| **TASK-008** | TASK-004, TASK-007 | REQ-FORM-001, REQ-FORM-002, REQ-SEC-001, REQ-A11Y-001 | Component Spec, UX Spec | `InquiryForm.astro`, interactive UI states | Yes | Form submission test | Yes |
-| **TASK-009** | TASK-001, TASK-003 | REQ-PRIV-001 | Security Spec, Data Contract | Analytics script injection | No | Privacy review | No |
-| **TASK-010** | TASK-001, TASK-002, TASK-003, TASK-007, TASK-009 | REQ-DEVOPS-001 | Env Spec | Webhook endpoint, Vercel build configs | Yes | Production setup approval | Yes (Mandatory Gate) |
-| **TASK-011** | TASK-002, TASK-003, TASK-004, TASK-005 | REQ-PROD-002, REQ-UI-001 | Content Blueprint, SEO Spec | Sanity Lake data entries, real assets | No | Proof assets approval | No |
-| **TASK-012** | TASK-004, TASK-005, TASK-008, TASK-009 | REQ-A11Y-001, REQ-PERF-001 | SEO Spec, Component Spec | Speed & Accessibility optimizations | No | Audit results review | Recommended |
-| **TASK-013** | TASK-001 to TASK-012 | All | Verification Plan | `/verification/`, `/docs/` | No | Transfer approval | Yes (Mandatory Gate) |
+### A. Accessibility Preservation
+- **Color Contrast:** Keep color combinations above WCAG 2.2 AA ratios (e.g., text against navy background at >= 4.5:1).
+- **Focus Rings:** Ensure all interactive elements retain a high-contrast `:focus-visible` outline.
+- **Keyboard Navigation:** Retain existing semantic HTML layout, skip-links, and clean tab-order.
+- **Aria Attributes:** Maintain correct semantic linkages between input fields and helper spans (including the newly added `form-email-helper`).
+- **Reduced Motion:** Retain `prefers-reduced-motion` media query protections in custom CSS animations.
+- **Touch Targets:** Buttons and interactive links will keep minimum touch targets of `48px x 48px`.
+
+### B. Performance Preservation
+- **Local Assets Only:** No external CDNs or heavy scripts will be added.
+- **Optimization:** All generated visual assets will be converted to webp/svg format with compression, with a maximum file size constraint of `< 150KB` per raster image.
+- **Zero New Dependencies:** Maintain the current package tree; do not run `pnpm add` or install new libraries.
 
 ---
 
-## 8. Tasks That Should Not Be Combined
+## 8. Vercel Preview Demo Deployment Plan
 
-- **TASK-002 (Sanity Schema) & TASK-006 (Supabase Table):** These must remain separate as they govern separate security and architecture silos. Sanity is for public content, while Supabase holds private leads. Combining them risks architectural contamination.
-- **TASK-007 (Inquiry API) & TASK-008 (Form UI):** Developing the backend API separately ensures clean testing of validation, rate limits, and Turnstile checks before connecting to the frontend form.
-- **TASK-010 (Vercel Deploy/Webhooks) & TASK-013 (Final Verification Pack):** Keeping the deployment phase isolated prevents local environment changes from corrupting the final evidence compilation.
+This is a planning checklist for a later staging/preview deployment to allow owner review. **No deploy commands will be executed during this step.**
 
----
-
-## 9. Tasks That Could Be Split Smaller
-
-- **TASK-007 (Secure API Setup):** Can be split into:
-  1. *TASK-007A:* Set up Vercel/Astro endpoint with anti-spam honeypot and schema checks.
-  2. *TASK-007B:* Integrate Supabase DB write.
-  3. *TASK-007C:* Connect Resend email delivery.
-- **TASK-003 (Astro routing):** Can be split into:
-  1. *TASK-003A:* Setup index commercial paths (Home, Services, Problems, Locations).
-  2. *TASK-003B:* Setup dynamic slugs resolving from Sanity with safe empty/fallback states.
+- **Target Build Type:** Staging Preview (automatic Vercel branch deployment triggered by pushing to `demo-visual-polish` remote branch).
+- **Production Flag:** **Never** run `vercel --prod` or link the branch to a production domain.
+- **Site Indexing Gate:** The Vercel preview domain (`*.vercel.app`) automatically triggers `noindex, nofollow` meta tags via `MetaTags.astro`.
+- **Form Submission Warning & Behavior:** The inquiry form on the preview URL will be visibly disabled, and will include a clear, accessible header banner text: `"PROBNI RAD: Sustav radi u testnom načinu. Slanje upita je onemogućeno i podaci se ne spremaju u bazu."` No mock data is submitted or simulated as successful, and no console logging of submissions occurs.
+- **Secrets Posture:** Staging variables on Vercel dashboard will use placeholder keys.
 
 ---
 
-## 10. Security & Privacy Risks
+## 9. Verification & Evidence Plan
 
-1. **Supabase Service Role Key Exposure:**
-   - *Risk:* Accidental exposure of the service role key in the browser environment gives full write/delete access to database records.
-   - *Mitigation:* Ensure `SUPABASE_SERVICE_ROLE_KEY` is loaded only in `.astro` server-side files or endpoint files (`.ts` routes) and never bound to client scripts. Implement RLS on the table to block public reads.
-2. **Exposing API Keys in Logs:**
-   - *Risk:* Writing the body of `/api/inquiries` submissions or error stacks directly to logger systems can leak customer names, phones, messages, or provider tokens.
-   - *Mitigation:* Sanitize logs before printing. Log only metadata (e.g., `"Inquiry received: accepted"`), and catch Resend/Supabase exceptions without printing full configuration variables.
-3. **Turnstile Secret Leak:**
-   - *Risk:* Exposing the Turnstile secret key client-side allows bots to bypass verification.
-   - *Mitigation:* Ensure Turnstile validation happens strictly on Vercel backend routers.
-4. **Data Retention Violation:**
-   - *Risk:* Retaining customer inquiries indefinitely breaches GDPR.
-   - *Mitigation:* Supabase table contains the `retention_delete_after` date field. Implement a routine database clean-up process (via database CRON or documented manual deletion instructions).
+To verify the visual polish pass, the following documentation and log files will be created in later steps:
+1. **`verification/TASK-DEMO-READY.md`:** Documenting that all placeholder constraints are verified, noindex is active, and no secrets exist in the build.
+2. **`verification/TASK-UI-POLISH.md`:** Documenting keyboard navigation checks, contrast ratios, and layout responsiveness.
+3. **`build-notes/demo-ready-preparation.md`:** Recording seed validation and initial setup compilation.
+4. **`build-notes/demo-visual-foundation-polish.md`:** Storing the final `pnpm run build` compilation log for the polish files.
 
 ---
 
-## 11. Documentation & Handover Plan
+## 10. Proposed Planning Files to Create
 
-We will create and maintain documentation in `/docs/` and `/build-notes/` according to the AI Process Pack v1.4 rules. No secrets will be written to these files.
-
-| Document Path | Content Purpose | Created/Updated in Phase |
-|---|---|---|
-| **`/build-notes/phase-XX-[name].md`** | Evidence of actions, deviations, and command outputs for each build phase. | Phase 1 to 6 |
-| **`/verification/evidence-register.md`** | Index of all requirement PASS evidence (Rich Schema verification, sitemaps, forms). | Phase 6 |
-| **`/docs/local-development.md`** | Explains local dependencies, startup commands, and env configuration. | Phase 1 |
-| **`/docs/deployment-and-env.md`** | Safe setup steps for Vercel, Sanity, Supabase, Resend, and Turnstile. | Phase 1 & 4 |
-| **`/docs/cms-editor-guide.md`** | Guides editors on publishing schemas, status tags, and content blocks. | Phase 2 & 5 |
-| **`/docs/lead-management-guide.md`** | Details where leads go, retention policies, and notification triggers. | Phase 4 |
-| **`/docs/security-privacy-handover.md`**| Privacy policy summary, credentials audit, data classification details. | Phase 4 & 6 |
-| **`/docs/owner-manual.md`** | High-level summary for the site owner on running and editing the site. | Phase 6 |
-| **`/docs/troubleshooting.md`** | Recovery steps for webhook failure, API blocks, or deployment errors. | Phase 6 |
+We will write the detailed sub-plan files in the repository:
+1. [demo/demo-readiness-checklist.md](file:///d:/Presura_v2/demo/demo-readiness-checklist.md)
+2. [demo/vercel-preview-demo-notes.md](file:///d:/Presura_v2/demo/vercel-preview-demo-notes.md)
+3. [demo/demo-visual-asset-plan.md](file:///d:/Presura_v2/demo/demo-visual-asset-plan.md)
+4. [provisioning/production-provisioning-plan.md](file:///d:/Presura_v2/provisioning/production-provisioning-plan.md)
+5. [provisioning/owner-input-checklist.md](file:///d:/Presura_v2/provisioning/owner-input-checklist.md)
 
 ---
 
-## 12. Missing Information
+## 11. Proposed Execution Sequence
 
-| Item | Sensitivity / Impact | Classification |
-|---|---|---|
-| **Production business contact data (NAP)** | High (Schema/UI blocks) | **NEEDS HUMAN APPROVAL** / **LAUNCH BLOCKER** |
-| **Real work portfolio images & copy** | Medium (Trust/SEO blocks) | **NEEDS HUMAN APPROVAL** / **ASSUMPTION** |
-| **Vercel team/project identifiers** | Medium (Hosting deploy) | **NOT SPECIFIED** |
-| **Supabase schema/account ownership** | High (Lead database) | **NOT SPECIFIED** |
-| **Resend sender address validation domain**| High (Email notifications) | **NEEDS HUMAN APPROVAL** |
-| **Analytics script account domain** | Low (GDPR/Compliance check) | **NOT SPECIFIED** |
-
----
-
-## 13. Recommended First Implementation Phase
-
-We recommend executing **Phase 1: Project Setup & Quality Baseline** (TASK-001).
-- **Why:** It establishes a clean, buildable Astro and Tailwind workspace. Setting up formatting, lint checks, and the `.env.example` placeholders immediately ensures code quality from day one and guards against accidental key exposure before any dynamic code is written.
+1. **Step 1 (Current):** User reviews and approves this pre-implementation plan.
+2. **Step 2:** Update the 5 sub-plan files in `demo/` and `provisioning/` folders (Completed).
+3. **Step 3:** Review and approve the sub-plan documents.
+4. **Step 4:** Execute the Demo Visual Foundation Polish (modify CSS, layouts, components, and generate visual assets).
+5. **Step 5:** Perform local builds and verification checks.
+6. **Step 6:** Push changes to the `demo-visual-polish` branch on GitHub (triggering Vercel Preview).
+7. **Step 7:** Owner reviews staging URL and provides feedback.
+8. **Step 8:** Owner provides production credentials and approved NAP.
+9. **Step 9:** Execute production provisioning and final verification checks.
+10. **Step 10:** Public Launch Approval.
 
 ---
 
-## 14. Branch & Commit Strategy
-
-- **Branch Naming:**
-  - Standard branch name per phase: `phase-[XX]-[name]` (e.g., `phase-01-setup`).
-  - Merge to `main` only after verification evidence passes and receives human approval.
-- **Commit Pattern:**
-  - One approved phase per checkpoint.
-  - Commit messages must be structured: `[Phase-XX] [TASK-ID]: Short descriptive title` (e.g., `[Phase-01] TASK-001: setup astro project and tailwind v4 baseline`).
+## 12. Proposed Commands (Allowed)
+- `git status`
+- `pnpm run build`
+- `pnpm run preview`
 
 ---
 
-## 15. Verification Strategy
+## 13. Risks, Gates & Classifications
 
-We will follow the rule: **No PASS without evidence.**
-- **Automatic checks:** Run `npm run build`, `npm run lint`, and `npm run typecheck` in Phase 1-6.
-- **Manual verification:**
-  - Check mobile layout rendering and sticky CTA visibility in chrome devtools responsive emulator.
-  - Submit test forms and copy output database rows (redacted) and Resend portal confirmation.
-  - Validate JSON-LD code block outputs using schema.org validators.
-- **Evidence Storage:** Captured log files and screenshots will be saved to `/verification/` with matching references in `/verification/evidence-register.md` and phase-specific build notes.
+- **`NEEDS HUMAN APPROVAL` / `LAUNCH BLOCKER`:** Replacement of all placeholder contact information.
+- **`NEEDS HUMAN APPROVAL` / `LAUNCH BLOCKER`:** Toggle `schemaEnabled: true` in production database/CMS settings.
+- **`NOT VERIFIED` / `LAUNCH BLOCKER`:** Live credentials verification (Supabase, Resend, Turnstile, Vercel).
+- **`SCOPE RISK`:** Introducing too many heavy animations that degrade PageSpeed scores below the performance target.
+- **`SCOPE RISK`:** Using unapproved styling patterns that diverge from the dark/navy + orange technical utility aesthetic.

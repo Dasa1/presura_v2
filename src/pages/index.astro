@@ -11,29 +11,43 @@ const problems = await sanityClient.fetch('*[_type == "problem"]');
 
 <Layout title="Početna | Servis grijanja i tehničke instalacije" description="Brz i pouzdan servis grijanja, instalacija i tehničkih usluga u vašoj regiji.">
   <!-- Hero Section -->
-  <section class="py-12 md:py-20 text-center bg-white rounded-2xl shadow-sm border border-slate-100 px-6 sm:px-12">
-    <div class="max-w-3xl mx-auto space-y-6">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-50 text-orange-600">
+  <section class="py-16 md:py-24 text-center hero-gradient text-white rounded-2xl shadow-md border border-slate-950 px-6 sm:px-12 relative overflow-hidden">
+    <!-- Subtle visual layout pattern -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" aria-hidden="true"></div>
+    
+    <div class="max-w-3xl mx-auto space-y-6 relative z-10">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-950/50 border border-orange-500/30 text-orange-400">
         Lokalni tehnički servis
       </span>
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-        Pouzdan servis grijanja i tehničkih instalacija
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Pouzdan servis grijanja i <span class="accent-gradient-text">tehničkih instalacija</span>
       </h1>
-      <p class="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">
+      <p class="text-base sm:text-lg text-slate-300 max-w-xl mx-auto leading-relaxed">
         Brza dijagnostika, redovito održavanje i hitne intervencije. Stručnost i transparentne cijene uz zajamčenu kvalitetu.
       </p>
+      
+      <div class="mt-8 max-w-md mx-auto rounded-xl overflow-hidden border border-slate-800/80 bg-slate-950/40 p-2 shadow-inner">
+        <img 
+          src="/demo-assets/demo-hero-ambience.webp" 
+          alt="Demo placeholder: Modern heating installation." 
+          class="rounded-lg w-full h-48 object-cover opacity-85 hover:opacity-100 interactive-transition"
+          width="448"
+          height="192"
+          loading="eager"
+        />
+      </div>
       
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <!-- Safe disabled CTA button -->
         <button
           type="button"
           aria-disabled="true"
-          class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600/50 text-slate-300 cursor-not-allowed select-none focus:outline-none min-h-[44px]"
+          class="inline-flex items-center justify-center px-6 py-3 border border-orange-500/20 text-base font-bold rounded-lg bg-orange-600/30 text-orange-200 cursor-not-allowed select-none focus:outline-none min-h-[44px] interactive-transition"
           aria-label="Nazovite dežurni servis (Onemogućeno - placeholder)"
         >
           Servis: PHONE_PLACEHOLDER
         </button>
-        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-slate-200 text-base font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 min-h-[44px]">
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700/60 text-base font-medium rounded-lg text-slate-200 bg-slate-900/60 hover:bg-slate-800/80 hover:text-white interactive-transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-500 min-h-[44px]">
           Pošaljite upit za ponudu
         </a>
       </div>

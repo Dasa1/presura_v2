@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
-/* Define base custom styles and font fallbacks here */
 :root {
   --color-brand-primary: #0f172a; /* Slate 900 */
-  --color-brand-accent: #ea580c;  /* Orange 600 */
+  --color-brand-accent: #f97316;  /* Orange 500 */
+  --color-brand-accent-hover: #ea580c; /* Orange 600 */
+  --color-brand-bg-dark: #0b0f19; /* Deep Navy */
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
 }
 
 html,
@@ -14,13 +17,51 @@ body {
   height: 100%;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: #f8fafc; /* Slate 50 */
-  color: #0f172a; /* Slate 900 */
+  color: #1e293b; /* Slate 800 */
 }
 
 /* Accessible focus styling */
 :focus-visible {
   outline: 2px solid var(--color-brand-accent);
   outline-offset: 2px;
+}
+
+/* Glassmorphism Boundary check: Ensure accessibility and contrast remain strong */
+.subtle-glass {
+  background-color: rgba(15, 23, 42, 0.85); /* 85% opacity Slate 900 for solid contrast */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.subtle-glass-light {
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Gradients */
+.hero-gradient {
+  background: linear-gradient(135deg, #0b0f19 0%, #1e1b4b 50%, #0f172a 100%);
+}
+
+.accent-gradient-text {
+  background: linear-gradient(to right, #f97316, #fdba74);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Smooth micro-interactions */
+.interactive-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover {
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
+    border-color: rgba(249, 115, 22, 0.2);
+  }
 }
 
 /* Reduced motion support */
@@ -32,4 +73,3 @@ body {
     scroll-behavior: auto !important;
   }
 }
-
