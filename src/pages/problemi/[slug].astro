@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+import seedData from '../../sanity/seed.json';
+
+export async function getStaticPaths() {
+  const problems = await sanityClient.fetch('*[_type == "problem"]');
+  return problems.map((problem: any) => ({
+    params: { slug: problem.slug.current },
+    props: { problem }
+  }));
+}
+
+interface Props {
+  problem: any;
+}
+
+const { problem } = Astro.props;
+
+// Resolve recommended service reference
+const recommendedService = seedData.services.find(
+  s => s._id === problem.recommendedService._ref
+);
+
+// Resolve siteSettings
+const siteSettings = seedData.siteSettings;
+---
+
+<Layout title={`${problem.title} | Simptomi`} description={problem.problemStatement}>
+  <article class="max-w-3xl mx-auto space-y-12">
+    <!-- Header Section -->
+    <header class="space-y-4 border-b border-slate-200 pb-8">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-red-600 uppercase">
+        <span>Kvar & Simptom</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        <span class="text-slate-500">{problem.status}</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+        {problem.title}
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed">
+        {problem.problemStatement}
+      </p>
+    </header>
+
+    <!-- Specific Symptoms List -->
+    {problem.symptoms && problem.symptoms.length > 0 && (
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold text-slate-900">Kako prepoznati ovaj problem?</h2>
+        <div class="bg-red-50/50 border border-red-100 rounded-2xl p-6">
+          <ul class="space-y-3">
+            {problem.symptoms.map((symptom: string) => (
+              <li class="flex items-start gap-3 text-slate-700">
+                <svg class="h-5 w-5 text-red-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span class="text-base font-medium">{symptom}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    <!-- Recommended Service Box -->
+    {recommendedService && (
+      <section class="bg-slate-900 text-white rounded-2xl p-8 border border-slate-800 space-y-6">
+        <div class="space-y-2">
+          <span class="text-xs font-bold text-orange-500 uppercase tracking-widest">Preporučeno rješenje</span>
+          <h2 class="text-2xl font-extrabold tracking-tight">{recommendedService.title}</h2>
+          <p class="text-slate-300 text-sm sm:text-base">
+            {recommendedService.shortDescription}
+          </p>
+        </div>
+        <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-4 items-center justify-between">
+          <a href={`/usluge/${recommendedService.slug.current}`} class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 focus:outline-none transition-colors">
+            Detalji usluge &rarr;
+          </a>
+          <a href="/kontakt/" class="text-sm font-semibold text-slate-300 hover:text-white underline">
+            Pošaljite izravan upit
+          </a>
+        </div>
+      </section>
+    )}
+
+    <!-- Standard Warning/Disclaimer -->
+    <section class="bg-amber-50 border border-amber-200 rounded-xl p-6 text-sm text-amber-800 space-y-2">
+      <h3 class="font-bold flex items-center gap-2">
+        <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        Važna napomena o sigurnosti
+      </h3>
+      <p>
+        Pokušaji samostalnog popravka plinskih sustava ili instalacija grijanja pod tlakom mogu biti izuzetno opasni i uzrokovati štetu ili ugroziti zdravlje. Prepustite servis stručnim i ovlaštenim osobama.
+      </p>
+    </section>
+
+    <!-- Generic Contact Footer -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8 border-t border-slate-200">
+      <a href="/kontakt/" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+        Naručite pregled
+      </a>
+      <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-slate-300 text-base font-bold rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+        Tel: {siteSettings.phoneDisplay}
+      </a>
+    </div>
+  </article>
+</Layout>

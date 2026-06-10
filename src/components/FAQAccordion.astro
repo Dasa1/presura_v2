@@ -1,0 +1,65 @@
+---
+interface FAQ {
+  _id: string;
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  faqs: FAQ[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<div class="space-y-4 max-w-3xl mx-auto" id="faq-accordion-group">
+  {faqs.map((faq, index) => (
+    <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+      <h3 class="margin-0">
+        <button
+          type="button"
+          id={`faq-btn-${faq._id}`}
+          aria-expanded="false"
+          aria-controls={`faq-panel-${faq._id}`}
+          class="w-full flex justify-between items-center px-6 py-4 text-left font-bold text-slate-900 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-50 text-base sm:text-lg min-h-[44px]"
+        >
+          <span>{faq.question}</span>
+          <svg class="h-5 w-5 text-slate-500 shrink-0 transform transition-transform duration-200" id={`faq-icon-${faq._id}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </h3>
+      <div
+        id={`faq-panel-${faq._id}`}
+        aria-labelledby={`faq-btn-${faq._id}`}
+        role="region"
+        class="hidden px-6 pb-6 pt-2 text-slate-700 leading-relaxed text-sm sm:text-base border-t border-slate-100"
+      >
+        <p>{faq.answer}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  // Dynamic interaction scripts for the FAQ Accordion
+  const accordionButtons = document.querySelectorAll('#faq-accordion-group button');
+
+  accordionButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId || '');
+      const icon = btn.querySelector('svg');
+
+      // Toggle state
+      btn.setAttribute('aria-expanded', String(!isExpanded));
+      if (panel) {
+        panel.classList.toggle('hidden');
+      }
+      if (icon) {
+        icon.classList.toggle('rotate-180');
+      }
+    });
+  });
+</script>

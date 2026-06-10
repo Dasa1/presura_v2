@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+import seedData from '../../sanity/seed.json';
+
+const allWorks = await sanityClient.fetch('*[_type == "work"]');
+
+// Filter works with approved publish consent
+const works = allWorks.filter((w: any) => w.publishConsentStatus === 'approved');
+
+// Resolve siteSettings
+const siteSettings = seedData.siteSettings;
+---
+
+<Layout title="Naši Radovi | Reference i Projekti" description="Pregledajte referentne projekte, obavljene servise i strojna ispiranja sustava grijanja koje smo uspješno odradili.">
+  <div class="space-y-12 max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="text-center space-y-4 max-w-2xl mx-auto">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+        Naši Odrađeni Radovi
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed">
+        Prikaz stvarnih referenci i tehničkih intervencija na terenu. Svaki projekt dokazuje našu stručnost i predanost kvaliteti.
+      </p>
+    </div>
+
+    <!-- Works / Projects List -->
+    {works.length === 0 ? (
+      <div class="bg-white rounded-2xl p-12 text-center border border-slate-200">
+        <h2 class="text-xl font-bold text-slate-900 mb-2">Reference se pripremaju</h2>
+        <p class="text-slate-500 font-medium max-w-md mx-auto">
+          Trenutno nemamo objavljenih projekata s punim odobrenjem za javno prikazivanje. Cijenimo privatnost naših klijenata.
+        </p>
+      </div>
+    ) : (
+      <div class="grid gap-8">
+        {works.map((work: any) => {
+          // Resolve references
+          const service = seedData.services.find(s => s._id === work.service?._ref);
+          const location = seedData.locations.find(l => l._id === work.location?._ref);
+          return (
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col md:flex-row hover:shadow-md transition-shadow">
+              <!-- Left Content Panel -->
+              <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between space-y-6">
+                <div class="space-y-4">
+                  <div class="flex flex-wrap gap-2 items-center">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-700 border border-orange-100">
+                      Case Study
+                    </span>
+                    {service && (
+                      <a href={`/usluge/${service.slug.current}`} class="text-xs font-semibold text-slate-500 hover:text-orange-600 transition-colors">
+                        {service.title}
+                      </a>
+                    )}
+                    {location && (
+                      <span class="text-xs text-slate-300">|</span>
+                    )}
+                    {location && (
+                      <a href={`/lokacije/${location.slug.current}`} class="text-xs font-semibold text-slate-500 hover:text-orange-600 transition-colors">
+                        Lokacija: {location.cityName}
+                      </a>
+                    )}
+                  </div>
+                  
+                  <h2 class="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                    {work.title}
+                  </h2>
+                  
+                  <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                    {work.summary}
+                  </p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-medium">
+                  <span>Status privole: {work.publishConsentStatus}</span>
+                  <span>Verificiran rad na terenu</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )}
+
+    <!-- Trust banner fallback -->
+    <div class="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="space-y-1 text-center sm:text-left">
+        <h3 class="font-bold text-slate-900">U potpunosti poštujemo privatnost klijenta</h3>
+        <p class="text-xs text-slate-500 max-w-xl">
+          Prije objave bilo kakvih podataka o projektima na privatnim ili stambenim objektima, uvijek tražimo pismenu privolu vlasnika objekta. Nikada ne objavljujemo točne kućne adrese ili osobne podatke.
+        </p>
+      </div>
+      <a href="/kontakt/" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors shrink-0">
+        Pošaljite upit za vaš sustav
+      </a>
+    </div>
+  </div>
+</Layout>

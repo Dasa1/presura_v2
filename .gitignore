@@ -1,0 +1,38 @@
+# build and tool cache output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# local env files
+.env
+.env.production
+.env.local
+
+# log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env.*
+!.env.example
+
+# Vercel local/project metadata
+.vercel/
+
+# Private keys and certificates
+*.pem
+*.key
+
+# Generic local secret files
+secrets.*
+*.secret
+*.secrets

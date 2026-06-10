@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { sanityClient } from '../sanity/client';
+import seedData from '../sanity/seed.json';
+
+const priceItems = await sanityClient.fetch('*[_type == "priceItem"]');
+
+// Resolve siteSettings
+const siteSettings = seedData.siteSettings;
+---
+
+<Layout title="Cjenik Usluga | Transparentne Cijene" description="Informativni cjenik za strojno ispiranje centralnog grijanja, servis plinskih bojlera i ostale tehničke instalacije.">
+  <div class="space-y-12 max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="text-center space-y-4 max-w-2xl mx-auto">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+        Cjenik Usluga
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed">
+        Donosimo transparentan pregled cijena naših najtraženijih tehničkih usluga i servisa. Bez skrivenih troškova.
+      </p>
+    </div>
+
+    <!-- Pricing list / grids -->
+    {priceItems.length === 0 ? (
+      <div class="bg-white rounded-2xl p-12 text-center border border-slate-200">
+        <h2 class="text-xl font-bold text-slate-900 mb-2">Cijena na upit</h2>
+        <p class="text-slate-500 font-medium max-w-md mx-auto">
+          Trenutno nemamo definiran fiksni cjenik. Svaki sustav je jedinstven, stoga nas slobodno kontaktirajte za besplatnu procjenu i ponudu.
+        </p>
+      </div>
+    ) : (
+      <div class="grid gap-8 md:grid-cols-2">
+        {priceItems.map((item: any) => (
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 flex flex-col justify-between hover:shadow-md transition-shadow space-y-6">
+            <div class="space-y-4">
+              <div class="flex justify-between items-start gap-4">
+                <h2 class="text-xl font-bold text-slate-900 leading-tight">{item.title}</h2>
+                <div class="text-right shrink-0">
+                  <div class="text-2xl font-extrabold text-orange-600">
+                    {item.priceType === 'from' && `Od ${item.fromPrice} ${item.currency}`}
+                    {item.priceType === 'range' && `${item.rangeMin} - ${item.rangeMax} ${item.currency}`}
+                    {item.priceType === 'quote-only' && 'Na upit'}
+                  </div>
+                  <span class="text-xs text-slate-400 font-medium">Informativna cijena</span>
+                </div>
+              </div>
+
+              {item.includedItems && item.includedItems.length > 0 && (
+                <div class="space-y-2 pt-2 border-t border-slate-100">
+                  <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Što je uključeno:</h3>
+                  <ul class="space-y-2 text-sm text-slate-600">
+                    {item.includedItems.map((inc: string) => (
+                      <li class="flex items-start gap-2">
+                        <svg class="h-4 w-4 text-green-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>{inc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {item.caveatText && (
+              <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-xs text-slate-500 italic">
+                <strong>* Važna napomena:</strong> {item.caveatText}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+    <!-- Global Caveat Disclaimer -->
+    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-sm text-amber-800 space-y-2 max-w-3xl mx-auto">
+      <h3 class="font-bold flex items-center gap-2">
+        <svg class="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Napomena o cijenama i obračunu
+      </h3>
+      <p class="leading-relaxed">
+        Prikazane cijene su isključivo informativnog karaktera. Točna cijena usluge utvrđuje se nakon uviđaja stanja sustava, pregleda instalacija i specifikacije potrebnih rezervnih dijelova ili kemijskih sredstava. Sve cijene su podložne promjenama ovisno o složenosti radova.
+      </p>
+    </div>
+
+    <!-- CTA -->
+    <div class="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 text-center space-y-6">
+      <h2 class="text-2xl font-bold tracking-tight">Trebate točnu procjenu troška?</h2>
+      <p class="text-slate-300 max-w-xl mx-auto text-sm sm:text-base">
+        Naš stručni tim napravit će specifikaciju radova prilagođenu vašem objektu i sustavu centralnog grijanja.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 pt-2">
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 focus:outline-none transition-colors">
+          Zatražite ponudu
+        </a>
+        <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-bold rounded-lg text-slate-300 hover:bg-slate-800 transition-colors">
+          Kontakt: {siteSettings.phoneDisplay}
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

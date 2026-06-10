@@ -1,0 +1,74 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-slate-950 text-slate-400 border-t border-slate-900 py-12 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 md:grid-cols-4">
+    <!-- Brand Block -->
+    <div class="space-y-4 md:col-span-2">
+      <h2 class="text-white text-lg font-bold">Presura</h2>
+      <p class="text-sm text-slate-500 max-w-sm">
+        Tehnička rješenja, servis plinskih bojlera, strojno ispiranje radijatora i instalacije centralnog grijanja.
+      </p>
+      <!-- Safe Static Placeholders -->
+      <div class="text-xs space-y-1.5 text-slate-500 border-t border-slate-900 pt-4 max-w-xs">
+        <div class="flex gap-2">
+          <span class="font-semibold text-slate-400">Telefon:</span>
+          <span>PHONE_PLACEHOLDER</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="font-semibold text-slate-400">E-mail:</span>
+          <span>EMAIL_PLACEHOLDER</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="font-semibold text-slate-400">Adresa:</span>
+          <span>ADDRESS_PLACEHOLDER</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="space-y-4">
+      <h3 class="text-white text-sm font-semibold uppercase tracking-wider">Navigacija</h3>
+      <ul class="space-y-2 text-sm">
+        <li>
+          <a href="/usluge/" class="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-0.5">Usluge</a>
+        </li>
+        <li>
+          <a href="/problemi/" class="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-0.5">Problemi</a>
+        </li>
+        <li>
+          <a href="/lokacije/" class="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-0.5">Lokacije</a>
+        </li>
+        <li>
+          <a href="/cjenik/" class="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-0.5">Cjenik</a>
+        </li>
+        <li>
+          <a href="/radovi/" class="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-0.5">Odrađeni radovi</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Legal & Policy -->
+    <div class="space-y-4">
+      <h3 class="text-white text-sm font-semibold uppercase tracking-wider">Informacije</h3>
+      <ul class="space-y-2 text-sm">
+        <li>
+          <a href="/privatnost/" class="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-0.5">Zaštita privatnosti</a>
+        </li>
+        <li>
+          <!-- Disabled placeholder triggers -->
+          <span class="text-slate-600 block text-xs">Uvjeti korištenja (Staging)</span>
+        </li>
+        <li>
+          <span class="text-slate-600 block text-xs">Podaci o firmi (Nije odobreno)</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+    <p>© {currentYear} Presura. Sva prava pridržana.</p>
+    <p>Razvoj i implementacija u tijeku (Phase 3 Staging).</p>
+  </div>
+</footer>

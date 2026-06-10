@@ -1,0 +1,119 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+const navItems: NavItem[] = [
+  { label: 'Usluge', href: '/usluge/' },
+  { label: 'Problemi', href: '/problemi/' },
+  { label: 'Lokacije', href: '/lokacije/' },
+  { label: 'Cjenik', href: '/cjenik/' },
+  { label: 'Radovi', href: '/radovi/' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="text-xl font-bold tracking-tight text-white hover:text-orange-500 transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1" aria-label="Presura Početna">
+          Presura
+        </a>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex space-x-8 items-center" aria-label="Glavni izbornik">
+        {navItems.map(item => {
+          const isActive = currentPath === item.href || currentPath.startsWith(item.href) && item.href !== '/';
+          return (
+            <a 
+              href={item.href} 
+              class={`text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1.5 ${isActive ? 'text-orange-500' : 'text-slate-300 hover:text-white'}`}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+        <!-- Disabled CTA placeholder button -->
+        <button 
+          type="button" 
+          aria-disabled="true" 
+          class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded-lg bg-orange-600/50 text-slate-300 cursor-not-allowed select-none focus:outline-none min-h-[44px] min-w-[44px]"
+          aria-label="Nazovite za servis (Onemogućeno - placeholder)"
+        >
+          Servis: PHONE_PLACEHOLDER
+        </button>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex md:hidden">
+        <button 
+          type="button" 
+          id="mobile-menu-toggle" 
+          aria-expanded="false" 
+          aria-controls="mobile-menu" 
+          class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 min-h-[44px] min-w-[44px]"
+          aria-label="Otvori izbornik"
+        >
+          <svg class="h-6 w-6" id="menu-icon-hamburger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="h-6 w-6 hidden" id="menu-icon-close" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Menu -->
+  <div class="hidden md:hidden bg-slate-900 border-t border-slate-800" id="mobile-menu" aria-label="Mobilni izbornik">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {navItems.map(item => {
+        const isActive = currentPath === item.href || currentPath.startsWith(item.href) && item.href !== '/';
+        return (
+          <a 
+            href={item.href} 
+            class={`block px-3 py-3 rounded-md text-base font-medium focus-visible:ring-2 focus-visible:ring-orange-500 ${isActive ? 'text-orange-500 bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800'}`}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+      <div class="px-3 pt-4 border-t border-slate-800">
+        <button 
+          type="button" 
+          aria-disabled="true" 
+          class="w-full inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600/50 text-slate-300 cursor-not-allowed select-none focus:outline-none min-h-[44px]"
+          aria-label="Nazovite za servis (Onemogućeno - placeholder)"
+        >
+          Servis: PHONE_PLACEHOLDER
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamIcon = document.getElementById('menu-icon-hamburger');
+  const closeIcon = document.getElementById('menu-icon-close');
+
+  if (toggleBtn && mobileMenu && hamIcon && closeIcon) {
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+      
+      mobileMenu.classList.toggle('hidden');
+      hamIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+  }
+</script>

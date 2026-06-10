@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import seedData from '../sanity/seed.json';
+
+const siteSettings = seedData.siteSettings;
+---
+
+<Layout title="Kontakt | Pošaljite Upit" description="Kontaktirajte tehnički servis Presura za redovni servis bojlera, strojno ispiranje radijatora ili hitne popravke.">
+  <div class="max-w-6xl mx-auto space-y-12">
+    <!-- Header -->
+    <div class="text-center space-y-4 max-w-xl mx-auto">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+        Kontaktirajte Nas
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed">
+        Imate problema s grijanjem? Pošaljite nam opis kvara kroz obrazac ili zatražite informativnu ponudu.
+      </p>
+    </div>
+
+    <!-- Contact Info Cards & Form Section -->
+    <div class="grid gap-8 lg:grid-cols-3">
+      <!-- Left side: Contact Placeholders -->
+      <div class="space-y-6 lg:col-span-1">
+        <div class="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 space-y-6 border border-slate-800">
+          <h2 class="text-xl font-bold">Naši Podaci</h2>
+          
+          <div class="space-y-4">
+            <!-- Telephone -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-slate-800 rounded-xl text-orange-500 shrink-0">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 00.996.82h3.76a1 1 0 00.996-.82l.548-2.2a1 1 0 01.94-.725H21a2 2 0 012 2v10a2 2 0 01-2 2h-3.28a1 1 0 01-.94-.725l-.548-2.2a1 1 0 00-.996-.82H9.76a1 1 0 00-.996.82l-.548 2.2a1 1 0 01-.94.725H3a2 2 0 01-2-2V5z" />
+                </svg>
+              </div>
+              <div class="space-y-0.5">
+                <span class="block text-xs text-slate-400 font-bold uppercase tracking-wider">Telefon</span>
+                <span class="text-base font-medium text-slate-200">{siteSettings.phoneDisplay}</span>
+                <span class="block text-[10px] text-slate-500 italic">Preporučeno za hitne slučajeve</span>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-slate-800 rounded-xl text-orange-500 shrink-0">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div class="space-y-0.5">
+                <span class="block text-xs text-slate-400 font-bold uppercase tracking-wider">E-mail</span>
+                <span class="text-base font-medium text-slate-200">{siteSettings.emailDisplay}</span>
+              </div>
+            </div>
+
+            <!-- Address -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-slate-800 rounded-xl text-orange-500 shrink-0">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div class="space-y-0.5">
+                <span class="block text-xs text-slate-400 font-bold uppercase tracking-wider">Adresa</span>
+                <span class="text-base font-medium text-slate-200">{siteSettings.addressDisplay}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Working Hours info -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3">
+          <h3 class="font-bold text-slate-900 flex items-center gap-2">
+            <svg class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Radno Vrijeme (Placeholder)
+          </h3>
+          <p class="text-sm text-slate-600">
+            Dostupni za standardne upite radnim danom od 8:00 do 16:00 sati. Vikendom i izvan radnog vremena radimo isključivo hitne intervencije po pozivu (nakon odobrenja NAP-a).
+          </p>
+        </div>
+      </div>
+
+      <!-- Right side: Inquiry Form Component -->
+      <div class="lg:col-span-2">
+        <InquiryForm />
+      </div>
+    </div>
+  </div>
+</Layout>

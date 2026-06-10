@@ -1,0 +1,7 @@
+# Robots.txt — Safe Staging/Preview Configuration
+# Production indexing requires approved production domain and final NAP/schema approval.
+
+User-agent: *
+Disallow: /
+
+Sitemap: https://example.com/sitemap.xml

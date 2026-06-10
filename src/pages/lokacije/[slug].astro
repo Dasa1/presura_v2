@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+import seedData from '../../sanity/seed.json';
+
+export async function getStaticPaths() {
+  const locations = await sanityClient.fetch('*[_type == "location"]');
+  
+  // Filter out locations that do not have at least one unique proof block to avoid compiling thin content pages
+  const validLocations = locations.filter(
+    (l: any) => l.localProofBlocks && l.localProofBlocks.length > 0
+  );
+
+  return validLocations.map((location: any) => ({
+    params: { slug: location.slug.current },
+    props: { location }
+  }));
+}
+
+interface Props {
+  location: any;
+}
+
+const { location } = Astro.props;
+
+// Resolve related services references
+const relatedServices = (location.relatedServices || []).map((refObj: any) => {
+  return seedData.services.find(s => s._id === refObj._ref);
+}).filter(Boolean);
+
+// Resolve siteSettings
+const siteSettings = seedData.siteSettings;
+---
+
+<Layout title={`Tehničke Usluge i Servis Grijanja - ${location.cityName}`} description={location.localIntro}>
+  <article class="max-w-4xl mx-auto space-y-12">
+    <!-- Header Section -->
+    <header class="space-y-4 border-b border-slate-200 pb-8">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-orange-600 uppercase">
+        <span>Lokacija</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        <span class="text-slate-500">{location.cityName}</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+        Servis Grijanja i Bojlera u {location.cityName}
+      </h1>
+      <p class="text-xl text-slate-600 leading-relaxed font-light">
+        {location.localIntro}
+      </p>
+    </header>
+
+    <!-- Local Proof Blocks -->
+    <section class="space-y-6">
+      <h2 class="text-2xl font-bold text-slate-900">Naš rad na terenu u {location.cityName}</h2>
+      <div class="grid gap-6">
+        {location.localProofBlocks?.map((proof: any) => (
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-3">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+              {proof.title}
+            </h3>
+            <p class="text-slate-700 leading-relaxed pl-5">
+              {proof.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Services Offered Locally -->
+    {relatedServices.length > 0 && (
+      <section class="space-y-6">
+        <h2 class="text-2xl font-bold text-slate-900">Dostupne usluge u regiji</h2>
+        <div class="grid gap-6 sm:grid-cols-2">
+          {relatedServices.map((service: any) => (
+            <div class="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+              <div>
+                <h3 class="font-bold text-slate-900 mb-2">{service.title}</h3>
+                <p class="text-sm text-slate-600 line-clamp-3">{service.shortDescription}</p>
+              </div>
+              <a href={`/usluge/${service.slug.current}`} class="text-sm font-semibold text-orange-600 hover:text-orange-700 mt-4 inline-block">
+                Saznajte detalje &rarr;
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Localized CTA -->
+    <section class="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 text-center space-y-6">
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Trebate pouzdanog servisera u mjestu {location.cityName}?</h2>
+      <p class="text-slate-300 max-w-xl mx-auto">
+        Obavite redovni pregled i osigurajte mirnu sezonu grijanja. Naš tim pokriva cijelo područje {location.cityName} s brzim odzivom.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 pt-4">
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 focus:outline-none transition-colors">
+          Zatražite dolazak u {location.cityName}
+        </a>
+        <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-bold rounded-lg text-slate-300 hover:bg-slate-800 transition-colors">
+          Kontakt: {siteSettings.phoneDisplay}
+        </a>
+      </div>
+    </section>
+  </article>
+</Layout>

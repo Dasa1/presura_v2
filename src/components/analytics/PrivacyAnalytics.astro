@@ -1,0 +1,18 @@
+---
+// Read analytics domain from env
+const analyticsDomain = import.meta.env.PUBLIC_ANALYTICS_DOMAIN || '';
+
+const isPlaceholder = 
+  !analyticsDomain || 
+  analyticsDomain.includes('PLACEHOLDER') || 
+  analyticsDomain === '';
+---
+
+{isPlaceholder ? (
+  <!-- Analytics: Blocked on staging / placeholder missing -->
+  <!-- STATUS: NOT VERIFIED -->
+  <template data-comment="Plausible Analytics Blocked - Staging Mode" />
+) : (
+  <!-- Plausible Analytics (Cookie-less / GDPR compliant) -->
+  <script defer data-domain={analyticsDomain} src="https://plausible.io/js/script.js"></script>
+)}

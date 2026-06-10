@@ -1,0 +1,73 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TrustBar from '../components/TrustBar.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProblemCard from '../components/ProblemCard.astro';
+import { sanityClient } from '../sanity/client';
+
+const services = await sanityClient.fetch('*[_type == "service"]');
+const problems = await sanityClient.fetch('*[_type == "problem"]');
+---
+
+<Layout title="Početna | Servis grijanja i tehničke instalacije" description="Brz i pouzdan servis grijanja, instalacija i tehničkih usluga u vašoj regiji.">
+  <!-- Hero Section -->
+  <section class="py-12 md:py-20 text-center bg-white rounded-2xl shadow-sm border border-slate-100 px-6 sm:px-12">
+    <div class="max-w-3xl mx-auto space-y-6">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-50 text-orange-600">
+        Lokalni tehnički servis
+      </span>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+        Pouzdan servis grijanja i tehničkih instalacija
+      </h1>
+      <p class="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">
+        Brza dijagnostika, redovito održavanje i hitne intervencije. Stručnost i transparentne cijene uz zajamčenu kvalitetu.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+        <!-- Safe disabled CTA button -->
+        <button
+          type="button"
+          aria-disabled="true"
+          class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600/50 text-slate-300 cursor-not-allowed select-none focus:outline-none min-h-[44px]"
+          aria-label="Nazovite dežurni servis (Onemogućeno - placeholder)"
+        >
+          Servis: PHONE_PLACEHOLDER
+        </button>
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-slate-200 text-base font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 min-h-[44px]">
+          Pošaljite upit za ponudu
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Bar Component -->
+  <TrustBar />
+
+  <!-- Services Grid -->
+  <section class="py-12 space-y-8">
+    <div class="text-center max-w-xl mx-auto">
+      <h2 class="text-3xl font-extrabold text-slate-900">Usluge koje nudimo</h2>
+      <p class="mt-2 text-slate-600">Pregledajte naš spektar profesionalnih tehničkih usluga i servisa.</p>
+    </div>
+    
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.slice(0, 3).map((service: any) => (
+        <ServiceCard service={service} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Problems Grid -->
+  <section class="py-12 space-y-8 border-t border-slate-200">
+    <div class="text-center max-w-xl mx-auto">
+      <h2 class="text-3xl font-extrabold text-slate-900">Prepoznajte simptome kvara</h2>
+      <p class="mt-2 text-slate-600">Saznajte što uzrokuje problem s grijanjem i kako ga riješiti.</p>
+    </div>
+    
+    <div class="grid gap-6 sm:grid-cols-2">
+      {problems.slice(0, 2).map((problem: any) => (
+        <ProblemCard problem={problem} />
+      ))}
+    </div>
+  </section>
+</Layout>

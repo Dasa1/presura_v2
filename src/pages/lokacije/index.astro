@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+
+const allLocations = await sanityClient.fetch('*[_type == "location"]');
+
+// Filter out locations that do not have at least one unique proof block
+const locations = allLocations.filter((l: any) => l.localProofBlocks && l.localProofBlocks.length > 0);
+---
+
+<Layout title="Lokacije Usluga | Gdje Radimo" description="Pogledajte popis gradova i općina u kojima nudimo servis bojlera i strojno ispiranje grijanja.">
+  <div class="space-y-8">
+    <div class="text-center max-w-xl mx-auto space-y-4">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+        Lokacije i Područje Rada
+      </h1>
+      <p class="text-lg text-slate-600">
+        Pružamo tehničke usluge, servis bojlera i održavanje grijanja na sljedećim područjima s dokazanom lokalnom prisutnošću.
+      </p>
+    </div>
+
+    {locations.length === 0 ? (
+      <div class="bg-white rounded-lg p-12 text-center border border-slate-200">
+        <p class="text-slate-500 font-medium">Trenutno nema dostupnih lokacija s verificiranim lokalnim radovima.</p>
+      </div>
+    ) : (
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {locations.map((loc: any) => (
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="inline-flex items-center gap-1 text-xs font-semibold tracking-wider text-orange-600 uppercase">
+                <svg class="h-4 w-4 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>{loc.cityName}</span>
+              </div>
+              <h2 class="text-xl font-bold text-slate-900">{loc.cityName}</h2>
+              <p class="text-sm text-slate-600 line-clamp-3">{loc.localIntro}</p>
+            </div>
+            
+            <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
+              <a href={`/lokacije/${loc.slug.current}`} class="text-sm font-semibold text-orange-600 hover:text-orange-700">
+                Prikaži radove &rarr;
+              </a>
+              <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium">
+                {loc.localProofBlocks.length} referenca
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>

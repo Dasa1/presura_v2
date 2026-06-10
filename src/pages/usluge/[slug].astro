@@ -1,0 +1,151 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+import seedData from '../../sanity/seed.json';
+
+export async function getStaticPaths() {
+  const services = await sanityClient.fetch('*[_type == "service"]');
+  return services.map((service: any) => ({
+    params: { slug: service.slug.current },
+    props: { service }
+  }));
+}
+
+interface Props {
+  service: any;
+}
+
+const { service } = Astro.props;
+
+// Resolve references from seedData
+const relatedProblems = (service.relatedProblems || []).map((refObj: any) => {
+  return seedData.problems.find(p => p._id === refObj._ref);
+}).filter(Boolean);
+
+const priceItems = (service.priceItems || []).map((refObj: any) => {
+  return seedData.priceItems.find(p => p._id === refObj._ref);
+}).filter(Boolean);
+
+const relatedFAQs = (service.relatedFAQs || []).map((refObj: any) => {
+  return seedData.faqs.find(f => f._id === refObj._ref);
+}).filter(Boolean);
+
+// Resolve siteSettings for placeholders
+const siteSettings = seedData.siteSettings;
+---
+
+<Layout title={`${service.title} | Usluge`} description={service.shortDescription}>
+  <article class="max-w-4xl mx-auto space-y-12">
+    <!-- Header Section -->
+    <header class="space-y-4 border-b border-slate-200 pb-8">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-orange-600 uppercase">
+        <span>Usluga</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        <span class="text-slate-500">{service.status}</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+        {service.title}
+      </h1>
+      <p class="text-xl text-slate-600 leading-relaxed font-light">
+        {service.shortDescription}
+      </p>
+    </header>
+
+    <!-- Main Content Blocks -->
+    <section class="prose prose-slate max-w-none">
+      {service.contentBlocks?.map((block: any) => (
+        <div class="space-y-4 text-slate-700 leading-relaxed">
+          {block.children?.map((child: any) => (
+            <p class="text-lg">{child.text}</p>
+          ))}
+        </div>
+      ))}
+    </section>
+
+    <!-- Pricing Section -->
+    {priceItems.length > 0 && (
+      <section class="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 space-y-6">
+        <h2 class="text-2xl font-bold text-slate-900">Informativne Cijene</h2>
+        <div class="space-y-4">
+          {priceItems.map((item: any) => (
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+              <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <h3 class="text-lg font-bold text-slate-900">{item.title}</h3>
+                <span class="text-xl font-extrabold text-orange-600 whitespace-nowrap">
+                  {item.priceType === 'from' && `Od ${item.fromPrice} ${item.currency}`}
+                  {item.priceType === 'range' && `${item.rangeMin} - ${item.rangeMax} ${item.currency}`}
+                  {item.priceType === 'quote-only' && 'Na upit'}
+                </span>
+              </div>
+              
+              {item.includedItems && item.includedItems.length > 0 && (
+                <ul class="grid gap-2 sm:grid-cols-2 text-sm text-slate-600 list-inside list-disc">
+                  {item.includedItems.map((inc: string) => (
+                    <li>{inc}</li>
+                  ))}
+                </ul>
+              )}
+              
+              {item.caveatText && (
+                <p class="text-xs text-slate-500 italic mt-2 border-t border-slate-100 pt-2">
+                  * Napomena: {item.caveatText}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Related Symptoms/Problems -->
+    {relatedProblems.length > 0 && (
+      <section class="space-y-6">
+        <h2 class="text-2xl font-bold text-slate-900">Povezani Problemi i Simptomi</h2>
+        <div class="grid gap-6 sm:grid-cols-2">
+          {relatedProblems.map((prob: any) => (
+            <div class="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+              <div>
+                <h3 class="font-bold text-slate-900 mb-2">{prob.title}</h3>
+                <p class="text-sm text-slate-600 line-clamp-3">{prob.problemStatement}</p>
+              </div>
+              <a href={`/problemi/${prob.slug.current}`} class="text-sm font-semibold text-orange-600 hover:text-orange-700 mt-4 inline-block">
+                Prepoznajte simptome &rarr;
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- FAQs -->
+    {relatedFAQs.length > 0 && (
+      <section class="space-y-6">
+        <h2 class="text-2xl font-bold text-slate-900">Česta Pitanja (FAQ)</h2>
+        <div class="divide-y divide-slate-200 border-t border-b border-slate-200">
+          {relatedFAQs.map((faq: any) => (
+            <div class="py-6">
+              <h3 class="font-bold text-slate-900 mb-2">{faq.question}</h3>
+              <p class="text-slate-700 leading-relaxed">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Conversion Box (CTA) -->
+    <section class="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 text-center space-y-6">
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Trebate rješenje za vaš sustav?</h2>
+      <p class="text-slate-300 max-w-xl mx-auto">
+        Kontaktirajte nas za pregled, dijagnostiku i stručnu pomoć. Naši tehničari dostupni su za sve intervencije.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 pt-4">
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors">
+          Pošaljite Upit
+        </a>
+        <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-bold rounded-lg text-slate-300 hover:bg-slate-800 transition-colors">
+          Nazovite: {siteSettings.phoneDisplay}
+        </a>
+      </div>
+    </section>
+  </article>
+</Layout>

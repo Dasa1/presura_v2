@@ -1,0 +1,288 @@
+{
+  "siteSettings": {
+    "title": "Presura",
+    "phoneDisplay": "PHONE_PLACEHOLDER",
+    "phoneTelHref": "PHONE_PLACEHOLDER",
+    "emailDisplay": "EMAIL_PLACEHOLDER",
+    "addressDisplay": "ADDRESS_PLACEHOLDER",
+    "openingHours": "HOURS_PLACEHOLDER",
+    "schemaEnabled": false
+  },
+  "services": [
+    {
+      "_id": "s1",
+      "title": "Servis plinskih bojlera",
+      "slug": { "current": "servis-plinskih-bojlera" },
+      "status": "published",
+      "shortDescription": "Redovni pregled i servis plinskih bojlera.",
+      "contentBlocks": [
+        {
+          "_type": "block",
+          "children": [{ "_type": "span", "text": "Pregled uređaja, kemijsko čišćenje kamenca i brza dijagnostika." }]
+        }
+      ],
+      "priceItems": [{ "_ref": "p1" }],
+      "relatedProblems": [{ "_ref": "pr1" }],
+      "relatedFAQs": [{ "_ref": "f1" }]
+    },
+    {
+      "_id": "s2",
+      "title": "Strojno ispiranje radijatora",
+      "slug": { "current": "strojno-ispiranje-radijatora" },
+      "status": "published",
+      "shortDescription": "Uklanjanje nečistoća iz sustava centralnog grijanja.",
+      "contentBlocks": [
+        {
+          "_type": "block",
+          "children": [{ "_type": "span", "text": "Specijaliziranim strojevima čistimo nakupljeni mulj i koroziju iz radijatora." }]
+        }
+      ],
+      "priceItems": [{ "_ref": "p2" }],
+      "relatedProblems": [{ "_ref": "pr2" }],
+      "relatedFAQs": [{ "_ref": "f2" }]
+    },
+    {
+      "_id": "s3",
+      "title": "Montaža toplinskih pumpi",
+      "slug": { "current": "montaza-toplinskih-pumpi" },
+      "status": "published",
+      "shortDescription": "Instalacija energetski učinkovitih toplinskih pumpi.",
+      "contentBlocks": [
+        {
+          "_type": "block",
+          "children": [{ "_type": "span", "text": "Izrada projekta i montaža sustava toplinskih pumpi za grijanje i hlađenje." }]
+        }
+      ],
+      "priceItems": [{ "_ref": "p3" }],
+      "relatedProblems": [],
+      "relatedFAQs": [{ "_ref": "f3" }]
+    },
+    {
+      "_id": "s4",
+      "title": "Servis i montaža klima uređaja",
+      "slug": { "current": "servis-i-montaza-klima-uredaja" },
+      "status": "published",
+      "shortDescription": "Održavanje i ugradnja klimatizacijskih sustava.",
+      "contentBlocks": [
+        {
+          "_type": "block",
+          "children": [{ "_type": "span", "text": "Redovni servis klima uređaja, čišćenje filtera te montaža novih jedinica." }]
+        }
+      ],
+      "priceItems": [{ "_ref": "p4" }],
+      "relatedProblems": [],
+      "relatedFAQs": []
+    },
+    {
+      "_id": "s5",
+      "title": "Ugradnja omekšivača vode",
+      "slug": { "current": "ugradnja-omeksivaca-vode" },
+      "status": "published",
+      "shortDescription": "Sustavi za omekšavanje i sprječavanje kamenca u vodi.",
+      "contentBlocks": [
+        {
+          "_type": "block",
+          "children": [{ "_type": "span", "text": "Ugradnja uređaja za omekšavanje vode radi zaštite bojlera, perilica i instalacija." }]
+        }
+      ],
+      "priceItems": [{ "_ref": "p5" }],
+      "relatedProblems": [{ "_ref": "pr3" }],
+      "relatedFAQs": []
+    },
+    {
+      "_id": "s6",
+      "title": "Instalacije centralnog grijanja",
+      "slug": { "current": "instalacije-centralnog-grijanja" },
+      "status": "published",
+      "shortDescription": "Polaganje cijevi i ugradnja radijatora za centralno grijanje.",
+      "contentBlocks": [
+        {
+          "_type": "block",
+          "children": [{ "_type": "span", "text": "Izvedba novih i sanacija postojećih cijevnih instalacija centralnog grijanja." }]
+        }
+      ],
+      "priceItems": [{ "_ref": "p6" }],
+      "relatedProblems": [],
+      "relatedFAQs": []
+    }
+  ],
+  "problems": [
+    {
+      "_id": "pr1",
+      "title": "Bojler javlja grešku i nema tople vode",
+      "slug": { "current": "bojler-javlja-gresku" },
+      "status": "published",
+      "problemStatement": "Bojler se isključuje i prikazuje kod pogreške, što onemogućuje rad i opskrbu vodom.",
+      "symptoms": ["Šifra greške na zaslonu", "Hladna voda", "Bojler ne reagira"],
+      "recommendedService": { "_ref": "s1" }
+    },
+    {
+      "_id": "pr2",
+      "title": "Radijatori su hladni pri dnu",
+      "slug": { "current": "radijatori-hladni-pri-dnu" },
+      "status": "published",
+      "problemStatement": "Nakupljene nečistoće sprječavaju normalnu cirkulaciju tople vode kroz radijator.",
+      "symptoms": ["Hladna donja polovica radijatora", "Šumovi u radijatoru", "Spora izmjena topline"],
+      "recommendedService": { "_ref": "s2" }
+    },
+    {
+      "_id": "pr3",
+      "title": "Kamenac na slavinama i u bojleru",
+      "slug": { "current": "kamenac-na-slavinama" },
+      "status": "published",
+      "problemStatement": "Tvrda voda uzrokuje brzo nakupljanje kamenca, što smanjuje vijek trajanja uređaja.",
+      "symptoms": ["Bijele naslage na slavinama", "Smanjen pritisak tople vode", "Česti kvarovi grijača"],
+      "recommendedService": { "_ref": "s5" }
+    }
+  ],
+  "locations": [
+    {
+      "_id": "l1",
+      "cityName": "Osijek",
+      "slug": { "current": "osijek" },
+      "status": "published",
+      "localIntro": "LOCAL_CONTEXT_PLACEHOLDER_OSIJEK_NEEDS_VERIFICATION",
+      "localProofBlocks": [
+        {
+          "title": "Lokalna referenca Osijek",
+          "description": "[LOCAL_PROOF_PLACEHOLDER_FOR_OSIJEK_NEEDS_REAL_DATA]"
+        }
+      ],
+      "relatedServices": [{ "_ref": "s1" }, { "_ref": "s2" }, { "_ref": "s5" }]
+    },
+    {
+      "_id": "l2",
+      "cityName": "Bilje",
+      "slug": { "current": "bilje" },
+      "status": "published",
+      "localIntro": "LOCAL_CONTEXT_PLACEHOLDER_BILJE_NEEDS_VERIFICATION",
+      "localProofBlocks": [
+        {
+          "title": "Lokalna referenca Bilje",
+          "description": "[LOCAL_PROOF_PLACEHOLDER_FOR_BILJE_NEEDS_REAL_DATA]"
+        }
+      ],
+      "relatedServices": [{ "_ref": "s1" }]
+    },
+    {
+      "_id": "l3",
+      "cityName": "Čepin",
+      "slug": { "current": "cepin" },
+      "status": "published",
+      "localIntro": "LOCAL_CONTEXT_PLACEHOLDER_CEPIN_NEEDS_VERIFICATION",
+      "localProofBlocks": [
+        {
+          "title": "Lokalna referenca Čepin",
+          "description": "[LOCAL_PROOF_PLACEHOLDER_FOR_CEPIN_NEEDS_REAL_DATA]"
+        }
+      ],
+      "relatedServices": [{ "_ref": "s1" }, { "_ref": "s6" }]
+    }
+  ],
+  "works": [
+    {
+      "_id": "w1",
+      "title": "Servis sustava",
+      "slug": { "current": "servis-sustava" },
+      "status": "published",
+      "service": { "_ref": "s2" },
+      "location": { "_ref": "l1" },
+      "summary": "Strojno ispiranje sustava centralnog grijanja.",
+      "publishConsentStatus": "placeholder"
+    },
+    {
+      "_id": "w2",
+      "title": "Instalacija grijanja",
+      "slug": { "current": "instalacija-grijanja" },
+      "status": "published",
+      "service": { "_ref": "s6" },
+      "location": { "_ref": "l3" },
+      "summary": "Polaganje cijevi i montaža radijatora.",
+      "publishConsentStatus": "placeholder"
+    }
+  ],
+  "priceItems": [
+    {
+      "_id": "p1",
+      "title": "Redovni servis plinskog bojlera",
+      "status": "published",
+      "priceType": "from",
+      "fromPrice": 60,
+      "currency": "EUR",
+      "includedItems": ["Pregled", "Čišćenje"],
+      "caveatText": "Konačna cijena ovisi o opsegu radova."
+    },
+    {
+      "_id": "p2",
+      "title": "Strojno ispiranje centralnog grijanja",
+      "status": "published",
+      "priceType": "range",
+      "rangeMin": 150,
+      "rangeMax": 350,
+      "currency": "EUR",
+      "includedItems": ["Spajanje ispirne crpke", "Ispiranje radijatora"],
+      "caveatText": "Ovisi o broju radijatora."
+    },
+    {
+      "_id": "p3",
+      "title": "Montaža toplinskih pumpi",
+      "status": "published",
+      "priceType": "quote",
+      "currency": "EUR",
+      "includedItems": ["Uviđaj", "Izrada ponude"],
+      "caveatText": "Zahtijeva prethodni uviđaj na terenu."
+    },
+    {
+      "_id": "p4",
+      "title": "Servis i montaža klima uređaja",
+      "status": "published",
+      "priceType": "from",
+      "fromPrice": 50,
+      "currency": "EUR",
+      "includedItems": ["Čišćenje", "Provjera plina"],
+      "caveatText": "Ovisi o snazi uređaja."
+    },
+    {
+      "_id": "p5",
+      "title": "Ugradnja omekšivača vode",
+      "status": "published",
+      "priceType": "from",
+      "fromPrice": 250,
+      "currency": "EUR",
+      "includedItems": ["Montaža omekšivača", "Ispitivanje vode"],
+      "caveatText": "Ovisi o kapacitetu sustava."
+    },
+    {
+      "_id": "p6",
+      "title": "Instalacije centralnog grijanja",
+      "status": "published",
+      "priceType": "quote",
+      "currency": "EUR",
+      "includedItems": ["Postavljanje cijevi", "Spajanje radijatora"],
+      "caveatText": "Formira se prema projektu."
+    }
+  ],
+  "faqs": [
+    {
+      "_id": "f1",
+      "question": "Koliko često treba servisirati plinski bojler?",
+      "answer": "Preporučuje se redoviti servis jednom godišnje kako bi se održala sigurnost i efikasnost.",
+      "status": "published",
+      "schemaEligible": true
+    },
+    {
+      "_id": "f2",
+      "question": "Koji su znakovi da je radijatorima potrebno ispiranje?",
+      "answer": "Hladni dijelovi radijatora, šumovi u sustavu i slabije grijanje cijelog objekta.",
+      "status": "published",
+      "schemaEligible": true
+    },
+    {
+      "_id": "f3",
+      "question": "Kako odabrati odgovarajuću toplinsku pumpu?",
+      "answer": "Odabir se temelji na energetskom proračunu zgrade, stanju izolacije i postojećem sustavu grijanja.",
+      "status": "published",
+      "schemaEligible": true
+    }
+  ]
+}

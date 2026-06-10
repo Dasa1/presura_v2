@@ -1,0 +1,271 @@
+---
+import { sanityClient } from '../sanity/client';
+
+// Fetch options for the form selects dynamically
+const services = await sanityClient.fetch('*[_type == "service" && status == "published"]');
+const locations = await sanityClient.fetch('*[_type == "location" && status == "published"]');
+
+// Get public Turnstile site key
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'; // Standard Cloudflare test sitekey
+---
+
+<div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm max-w-xl mx-auto space-y-6">
+  <div class="space-y-2">
+    <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Pošaljite Brzi Upit</h2>
+    <p class="text-xs sm:text-sm text-slate-500">Unesite svoje podatke i opis kvara. Odgovorit ćemo Vam u najkraćem mogućem roku.</p>
+  </div>
+
+  <form id="inquiry-lead-form" class="space-y-4" novalidate>
+    <!-- Honeypot Field (Visually hidden, excluded from tab focus) -->
+    <div class="hidden" aria-hidden="true">
+      <label for="form-website-field">Website URL (do not fill)</label>
+      <input type="text" name="website" id="form-website-field" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <!-- Status Messages Panels -->
+    <div id="form-error-panel" class="hidden bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-sm font-medium" role="alert"></div>
+    <div id="form-success-panel" class="hidden bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 text-sm font-medium" role="alert"></div>
+
+    <!-- Name input -->
+    <div class="space-y-1">
+      <label for="form-name" class="block text-sm font-bold text-slate-700">Ime i prezime *</label>
+      <input 
+        type="text" 
+        name="name" 
+        id="form-name" 
+        required
+        aria-required="true"
+        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white" 
+        placeholder="Npr. Ivan Horvat"
+      />
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <!-- Phone input -->
+      <div class="space-y-1">
+        <label for="form-phone" class="block text-sm font-bold text-slate-700">Broj telefona</label>
+        <input 
+          type="tel" 
+          name="phone" 
+          id="form-phone" 
+          aria-describedby="form-phone-helper"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white" 
+          placeholder="Npr. 091 234 5678"
+        />
+        <span class="text-[10px] text-slate-400" id="form-phone-helper">Potreban je telefon ili e-mail.</span>
+      </div>
+
+      <!-- Email input -->
+      <div class="space-y-1">
+        <label for="form-email" class="block text-sm font-bold text-slate-700">E-mail adresa</label>
+        <input 
+          type="email" 
+          name="email" 
+          id="form-email" 
+          aria-describedby="form-email-helper"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white" 
+          placeholder="Npr. ivan@example.com"
+        />
+        <span class="text-[10px] text-slate-400" id="form-email-helper">Potreban je telefon ili e-mail.</span>
+      </div>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <!-- Service Dropdown -->
+      <div class="space-y-1">
+        <label for="form-service" class="block text-sm font-bold text-slate-700">Zanimanje za uslugu</label>
+        <select 
+          name="service_interest" 
+          id="form-service"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+        >
+          <option value="opcenito">Opći upit / Drugo</option>
+          {services.map((s: any) => (
+            <option value={s.title}>{s.title}</option>
+          ))}
+        </select>
+      </div>
+
+      <!-- Location Dropdown -->
+      <div class="space-y-1">
+        <label for="form-location" class="block text-sm font-bold text-slate-700">Vaša lokacija</label>
+        <select 
+          name="location" 
+          id="form-location"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+        >
+          <option value="nema">Odaberite lokaciju</option>
+          {locations.map((l: any) => (
+            <option value={l.cityName}>{l.cityName}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <!-- Contact Method Preferences -->
+    <div class="space-y-1.5">
+      <span class="block text-sm font-bold text-slate-700">Preferirani način kontakta</span>
+      <div class="flex gap-4">
+        <label class="inline-flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+          <input type="radio" name="contact_method" value="email" checked class="text-orange-600 focus:ring-orange-500" />
+          <span>E-mail</span>
+        </label>
+        <label class="inline-flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+          <input type="radio" name="contact_method" value="phone" class="text-orange-600 focus:ring-orange-500" />
+          <span>Poziv</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Message input -->
+    <div class="space-y-1">
+      <label for="form-message" class="block text-sm font-bold text-slate-700">Opis kvara / upit *</label>
+      <textarea 
+        name="message" 
+        id="form-message" 
+        required 
+        aria-required="true"
+        rows="4"
+        maxlength="1000"
+        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white resize-none" 
+        placeholder="Opišite Vaš problem..."
+      ></textarea>
+      <div class="text-[10px] text-right text-slate-400" id="message-char-count">0 / 1000</div>
+    </div>
+
+    <!-- Cloudflare Turnstile Container -->
+    <div class="flex justify-center py-2">
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light"></div>
+    </div>
+
+    <!-- Privacy statement -->
+    <p class="text-[10px] text-slate-500 leading-normal">
+      Slanjem ovog obrasca slažete se s obradom osobnih podataka u svrhu obrade Vašeg upita i izrade informativne ponude. Vaši podaci pohranjuju se na rok od maksimalno 6 mjeseci te se nakon toga trajno uklanjaju.
+    </p>
+
+    <!-- Submit Button -->
+    <button 
+      type="submit"
+      id="form-submit-btn"
+      class="w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-sm font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors min-h-[44px]"
+    >
+      <span id="btn-text">Pošalji Upit</span>
+      <span id="btn-spinner" class="hidden ml-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+    </button>
+  </form>
+</div>
+
+<!-- Load Cloudflare Turnstile script -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  const form = document.getElementById('inquiry-lead-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('form-submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text');
+  const btnSpinner = document.getElementById('btn-spinner');
+  const errorPanel = document.getElementById('form-error-panel');
+  const successPanel = document.getElementById('form-success-panel');
+  const messageArea = document.getElementById('form-message') as HTMLTextAreaElement;
+  const charCount = document.getElementById('message-char-count');
+
+  // Char count updater
+  if (messageArea && charCount) {
+    messageArea.addEventListener('input', () => {
+      charCount.textContent = `${messageArea.value.length} / 1000`;
+    });
+  }
+
+  if (form && submitBtn && errorPanel && successPanel) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nameInput = document.getElementById('form-name') as HTMLInputElement;
+      const phoneInput = document.getElementById('form-phone') as HTMLInputElement;
+      const emailInput = document.getElementById('form-email') as HTMLInputElement;
+      const messageInput = document.getElementById('form-message') as HTMLTextAreaElement;
+
+      // Reset states
+      errorPanel.classList.add('hidden');
+      errorPanel.textContent = '';
+      successPanel.classList.add('hidden');
+      successPanel.textContent = '';
+
+      if (nameInput) nameInput.setAttribute('aria-invalid', 'false');
+      if (phoneInput) phoneInput.setAttribute('aria-invalid', 'false');
+      if (emailInput) emailInput.setAttribute('aria-invalid', 'false');
+      if (messageInput) messageInput.setAttribute('aria-invalid', 'false');
+
+      const formData = new FormData(form);
+      const name = formData.get('name')?.toString().trim();
+      const phone = formData.get('phone')?.toString().trim();
+      const email = formData.get('email')?.toString().trim();
+      const message = formData.get('message')?.toString().trim();
+
+      // Basic validations: Name & Message
+      if (!name) {
+        if (nameInput) nameInput.setAttribute('aria-invalid', 'true');
+        showError('Ime je obavezno polje.');
+        return;
+      }
+      if (!message) {
+        if (messageInput) messageInput.setAttribute('aria-invalid', 'true');
+        showError('Molimo opišite Vaš problem.');
+        return;
+      }
+
+      // Contact channels validation: Phone OR Email required
+      if (!phone && !email) {
+        if (phoneInput) phoneInput.setAttribute('aria-invalid', 'true');
+        if (emailInput) emailInput.setAttribute('aria-invalid', 'true');
+        showError('Molimo unesite barem jedan kontakt kanal (Broj telefona ili E-mail) kako bismo Vam mogli odgovoriti.');
+        return;
+      }
+
+      // Loading state active
+      submitBtn.setAttribute('aria-disabled', 'true');
+      submitBtn.disabled = true;
+      if (btnText && btnSpinner) {
+        btnText.textContent = 'Slanje...';
+        btnSpinner.classList.remove('hidden');
+      }
+
+      try {
+        const response = await fetch('/api/inquiries', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          successPanel.classList.remove('hidden');
+          successPanel.textContent = result.message || 'Upit je uspješno poslan.';
+          form.reset();
+          if (charCount) charCount.textContent = '0 / 1000';
+          
+          // Reset turnstile widget
+          if (window.hasOwnProperty('turnstile')) {
+            (window as any).turnstile.reset();
+          }
+        } else {
+          showError(result.error || 'Došlo je do greške prilikom obrade upita.');
+        }
+      } catch (err) {
+        showError('Došlo je do mrežne pogreške. Molimo provjerite internetsku vezu.');
+      } finally {
+        submitBtn.removeAttribute('aria-disabled');
+        submitBtn.disabled = false;
+        if (btnText && btnSpinner) {
+          btnText.textContent = 'Pošalji Upit';
+          btnSpinner.classList.add('hidden');
+        }
+      }
+    });
+
+    function showError(msg: string) {
+      errorPanel!.classList.remove('hidden');
+      errorPanel!.textContent = msg;
+      errorPanel!.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+</script>

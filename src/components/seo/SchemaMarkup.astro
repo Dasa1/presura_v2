@@ -1,0 +1,59 @@
+---
+import seedData from '../../sanity/seed.json';
+
+interface Props {
+  pageType: 'home' | 'service' | 'problem' | 'location' | 'pricing' | 'faq';
+  customData?: any;
+}
+
+const { pageType, customData } = Astro.props;
+
+// Fetch siteSettings from local seed
+const siteSettings = seedData.siteSettings;
+
+// Hard boundary check
+const schemaEnabled = siteSettings.schemaEnabled || false;
+
+// Read site URL from env to determine if preview environment
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://example.com';
+const isStaging = 
+  !import.meta.env.PUBLIC_SITE_URL || 
+  siteUrl.includes('example.com') || 
+  siteUrl.includes('localhost') || 
+  siteUrl.includes('staging');
+
+let schemaJSON: any = null;
+
+if (schemaEnabled) {
+  // If explicitly enabled by owner, construct the structured graph
+  if (pageType === 'home') {
+    schemaJSON = {
+      "@context": "https://schema.org",
+      "@type": "HVACBusiness",
+      "name": siteSettings.title || "Presura",
+      "telephone": siteSettings.phoneDisplay,
+      "email": siteSettings.emailDisplay,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": siteSettings.addressDisplay
+      },
+      "url": siteUrl
+    };
+  } else if (pageType === 'service' && customData) {
+    schemaJSON = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": customData.title,
+      "description": customData.shortDescription,
+      "provider": {
+        "@type": "HVACBusiness",
+        "name": siteSettings.title || "Presura"
+      }
+    };
+  }
+}
+---
+
+{schemaJSON && (
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJSON, null, 2)} />
+)}

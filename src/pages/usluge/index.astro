@@ -1,0 +1,44 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+
+const services = await sanityClient.fetch('*[_type == "service"]');
+---
+
+<Layout title="Usluge | Servis i instalacije" description="Pregled svih usluga i tehničkih rješenja koje nudimo.">
+	<div class="space-y-8">
+		<div class="text-center max-w-xl mx-auto space-y-4">
+			<h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+				Naše Usluge
+			</h1>
+			<p class="text-lg text-slate-600">
+				Nudimo pouzdana rješenja za sve vaše sustave grijanja, ispiranja i tehničkih instalacija.
+			</p>
+		</div>
+
+		{services.length === 0 ? (
+			<div class="bg-white rounded-lg p-12 text-center border border-slate-200">
+				<p class="text-slate-500 font-medium">Trenutno nema dostupnih usluga. Molimo provjerite ponovno kasnije.</p>
+			</div>
+		) : (
+			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{services.map((service: any) => (
+					<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+						<div class="space-y-3">
+							<h2 class="text-xl font-bold text-slate-900">{service.title}</h2>
+							<p class="text-sm text-slate-600 line-clamp-3">{service.shortDescription}</p>
+						</div>
+						<div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
+							<a href={`/usluge/${service.slug.current}`} class="text-sm font-semibold text-orange-600 hover:text-orange-700 focus-visible:ring-2 focus-visible:ring-orange-500">
+								Saznajte više &rarr;
+							</a>
+							<a href="#" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-bold rounded bg-slate-900 text-white hover:bg-slate-800 focus:outline-none">
+								Upit
+							</a>
+						</div>
+					</div>
+				))}
+			</div>
+		)}
+	</div>
+</Layout>

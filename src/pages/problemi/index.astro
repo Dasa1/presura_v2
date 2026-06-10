@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanityClient } from '../../sanity/client';
+import seedData from '../../sanity/seed.json';
+
+const problems = await sanityClient.fetch('*[_type == "problem"]');
+---
+
+<Layout title="Prepoznavanje Problema | Rješenja i Simptomi" description="Imate li problema s grijanjem? Pregledajte najčešće simptome kvarova i saznajte kako ih riješiti.">
+  <div class="space-y-8">
+    <div class="text-center max-w-xl mx-auto space-y-4">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+        Problemi i Simptomi
+      </h1>
+      <p class="text-lg text-slate-600">
+        Prepoznajte kvar na vašem sustavu grijanja ili bojleru i saznajte koje je najbolje rješenje.
+      </p>
+    </div>
+
+    {problems.length === 0 ? (
+      <div class="bg-white rounded-lg p-12 text-center border border-slate-200">
+        <p class="text-slate-500 font-medium">Trenutno nema prijavljenih simptoma. Ako trebate pomoć, kontaktirajte nas.</p>
+      </div>
+    ) : (
+      <div class="grid gap-6 sm:grid-cols-2">
+        {problems.map((problem: any) => {
+          // Find recommended service title
+          const recommended = seedData.services.find(s => s._id === problem.recommendedService._ref);
+          return (
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div class="space-y-4">
+                <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">
+                  Simptom
+                </div>
+                <h2 class="text-xl font-bold text-slate-900">{problem.title}</h2>
+                <p class="text-sm text-slate-600 line-clamp-3">{problem.problemStatement}</p>
+                
+                {problem.symptoms && problem.symptoms.length > 0 && (
+                  <ul class="text-xs text-slate-500 space-y-1 pl-4 list-disc">
+                    {problem.symptoms.slice(0, 3).map((sym: string) => (
+                      <li>{sym}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              
+              <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <a href={`/problemi/${problem.slug.current}`} class="text-sm font-semibold text-orange-600 hover:text-orange-700">
+                  Detaljna analiza &rarr;
+                </a>
+                {recommended && (
+                  <div class="text-xs text-slate-500">
+                    Preporučeno: <a href={`/usluge/${recommended.slug.current}`} class="underline font-medium text-slate-700 hover:text-orange-600">{recommended.title}</a>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</Layout>

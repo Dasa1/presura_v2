@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+// Read site URL from environment or default to placeholder
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://example.com';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+
+// Safety Posture Check: determine if environment is local, localhost, staging, or placeholder
+const isStagingOrLocal = 
+  !import.meta.env.PUBLIC_SITE_URL || 
+  siteUrl.includes('example.com') || 
+  siteUrl.includes('localhost') || 
+  siteUrl.includes('staging') || 
+  siteUrl.includes('vercel.app');
+---
+
+<!-- Canonical Tag -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- General SEO -->
+<title>{title} | Presura</title>
+<meta name="description" content={description} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={`${title} | Presura`} />
+<meta property="og:description" content={description} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalUrl} />
+<meta property="twitter:title" content={`${title} | Presura`} />
+<meta property="twitter:description" content={description} />
+
+<!-- Staging Search Engine Indexation Block -->
+{isStagingOrLocal ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="index, follow" />
+)}
