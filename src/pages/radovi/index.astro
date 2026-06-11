@@ -17,82 +17,85 @@ const siteSettings = seedData.siteSettings;
     <!-- Header -->
     <div class="text-center space-y-4 max-w-2xl mx-auto">
       <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
-        Naši Odrađeni Radovi
+        Reference se pripremaju
       </h1>
       <p class="text-lg text-slate-600 leading-relaxed">
-        Prikaz stvarnih referenci i tehničkih intervencija na terenu. Svaki projekt dokazuje našu stručnost i predanost kvaliteti.
+        Radovi će biti objavljeni nakon vlasničkog odobrenja i provjere privola.
       </p>
     </div>
 
-    <!-- Works / Projects List -->
-    {works.length === 0 ? (
-      <div class="bg-white rounded-2xl p-12 text-center border border-slate-200">
-        <h2 class="text-xl font-bold text-slate-900 mb-2">Reference se pripremaju</h2>
-        <p class="text-slate-500 font-medium max-w-md mx-auto">
-          Trenutno nemamo objavljenih projekata s punim odobrenjem za javno prikazivanje. Cijenimo privatnost naših klijenata.
+    <!-- Structured Placeholder Status Panel -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+      <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+        <span class="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></span>
+        <h2 class="text-lg font-bold text-slate-900">Status pripreme referentnih projekata</h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-4">
+        <!-- Step 1 -->
+        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2 relative">
+          <span class="absolute top-3 right-3 text-[10px] font-bold text-orange-650 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-150">Čeka potvrdu</span>
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Korak 1</div>
+          <h3 class="text-sm font-bold text-slate-900">Priprema materijala</h3>
+          <p class="text-xs text-slate-500 leading-normal">Tehnički nacrt i struktura informativnog prikaza.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2 relative">
+          <span class="absolute top-3 right-3 text-[10px] font-bold text-orange-650 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-150">Čeka potvrdu</span>
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Korak 2</div>
+          <h3 class="text-sm font-bold text-slate-900">Anonimizacija</h3>
+          <p class="text-xs text-slate-500 leading-normal">Uklanjanje adresa, prezimena i privatnih lokacija.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2 relative">
+          <span class="absolute top-3 right-3 text-[10px] font-bold text-orange-650 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-150">Čeka potvrdu</span>
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Korak 3</div>
+          <h3 class="text-sm font-bold text-slate-900">Vlasnička privola</h3>
+          <p class="text-xs text-slate-500 leading-normal">Prikupljanje pisanih suglasnosti za potrebe slikovnog prikaza.</p>
+        </div>
+        <!-- Step 4 -->
+        <div class="bg-slate-50 border border-slate-150 opacity-60 rounded-xl p-4 space-y-2 relative">
+          <span class="absolute top-3 right-3 text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">Nije aktivno</span>
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Korak 4</div>
+          <h3 class="text-sm font-bold text-slate-900">Javna objava</h3>
+          <p class="text-xs text-slate-500 leading-normal">Prikaz tehničkih rješenja i referentnih shema na webu.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy-First Explanation Card -->
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 space-y-4">
+        <h3 class="text-lg font-bold flex items-center gap-2">
+          <svg class="h-5 w-5 text-orange-500 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Politika zaštite privatnosti
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          U potpunosti poštujemo privatnost i sigurnost naših korisnika. Prije javne objave bilo kakvih referentnih materijala, fotografija strojarskih instalacija ili detalja izvedbe, provodi se strogi postupak verifikacije i traženja privole vlasnika objekta.
+        </p>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Nikada ne objavljujemo točne adrese, katastarske čestice, prezimena ili kontakt podatke naših klijenata na ovim stranicama.
         </p>
       </div>
-    ) : (
-      <div class="grid gap-8">
-        {works.map((work: any) => {
-          // Resolve references
-          const service = seedData.services.find(s => s._id === work.service?._ref);
-          const location = seedData.locations.find(l => l._id === work.location?._ref);
-          return (
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col md:flex-row hover:shadow-md transition-shadow">
-              <!-- Left Content Panel -->
-              <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between space-y-6">
-                <div class="space-y-4">
-                  <div class="flex flex-wrap gap-2 items-center">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-700 border border-orange-100">
-                      Case Study
-                    </span>
-                    {service && (
-                      <a href={`/usluge/${service.slug.current}`} class="text-xs font-semibold text-slate-500 hover:text-orange-600 transition-colors">
-                        {service.title}
-                      </a>
-                    )}
-                    {location && (
-                      <span class="text-xs text-slate-300">|</span>
-                    )}
-                    {location && (
-                      <a href={`/lokacije/${location.slug.current}`} class="text-xs font-semibold text-slate-500 hover:text-orange-600 transition-colors">
-                        Lokacija: {location.cityName}
-                      </a>
-                    )}
-                  </div>
-                  
-                  <h2 class="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-                    {work.title}
-                  </h2>
-                  
-                  <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                    {work.summary}
-                  </p>
-                </div>
 
-                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-medium">
-                  <span>Status privole: {work.publishConsentStatus}</span>
-                  <span>Verificiran rad na terenu</span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <!-- Inquiry Call-To-Action -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-sm space-y-6">
+        <div class="space-y-3">
+          <h3 class="text-lg font-bold text-slate-900">Trebate izradu tehničke ponude?</h3>
+          <p class="text-xs sm:text-sm text-slate-650 leading-relaxed">
+            Iako su javne reference trenutno u postupku odobrenja, naš tim je spreman napraviti izračun i tehničko rješenje direktno za vaš sustav grijanja ili bojlera.
+          </p>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-slate-100 gap-4">
+          <span class="text-xs font-semibold text-slate-400">Informativni upiti</span>
+          <a href="/kontakt/" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-xs font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 transition-colors">
+            Pošaljite upit
+          </a>
+        </div>
       </div>
-    )}
-
-    <!-- Trust banner fallback -->
-    <div class="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div class="space-y-1 text-center sm:text-left">
-        <h3 class="font-bold text-slate-900">U potpunosti poštujemo privatnost klijenta</h3>
-        <p class="text-xs text-slate-500 max-w-xl">
-          Prije objave bilo kakvih podataka o projektima na privatnim ili stambenim objektima, uvijek tražimo pismenu privolu vlasnika objekta. Nikada ne objavljujemo točne kućne adrese ili osobne podatke.
-        </p>
-      </div>
-      <a href="/kontakt/" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors shrink-0">
-        Pošaljite upit za vaš sustav
-      </a>
     </div>
   </div>
 </Layout>

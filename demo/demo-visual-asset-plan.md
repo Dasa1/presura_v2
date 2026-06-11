@@ -24,3 +24,15 @@ This document plans the generated placeholder visual assets that will be placed 
 - **Alt Text Requirement:** All webp assets must have alt texts starting with `"Demo placeholder: ..."`. The alt text must **never** imply that the image represents real work, real proof, or a real Presura project.
 - **Asset Registration:** All assets must be classified as a `DEMO_PLACEHOLDER_ASSET` in lists.
 - **LAUNCH BLOCKER:** Owner must approve, replace, or authorize retention of these placeholders before public launch.
+
+## Enrichment Patch Fallback Mapping
+During the visual enrichment pass, the following recommended assets are missing and use high-quality existing WebP fallbacks to avoid 404 image errors:
+* `demo-boiler-service.webp` -> Fallback: `demo-hero-ambience.webp`
+* `demo-heat-pump.webp` -> Fallback: `demo-hero-ambience.webp`
+* `demo-radiator-flushing.webp` -> Fallback: `demo-technical-piping-ambience.webp`
+* `demo-water-softener.webp` -> Fallback: `demo-technical-piping-ambience.webp`
+* `demo-cta-ambience.webp` -> Fallback: `demo-technical-piping-ambience.webp`
+* `demo-problem-boiler.webp` -> Fallback: `demo-hero-ambience.webp`
+* `demo-problem-radiator.webp` -> Fallback: `demo-technical-piping-ambience.webp`
+* `demo-problem-limescale.webp` -> Fallback: `demo-technical-piping-ambience.webp`
+

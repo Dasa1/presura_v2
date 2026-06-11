@@ -1,4 +1,6 @@
 ---
+import { Flame, RefreshCw, Wind, Snowflake, Droplet, Wrench, HelpCircle } from '@lucide/astro';
+
 interface Props {
   service: {
     title: string;
@@ -8,19 +10,104 @@ interface Props {
 }
 
 const { service } = Astro.props;
+
+// Factual requests list mapped strictly to service slugs for safety
+const getRequestsList = (slug: string) => {
+  if (slug === 'servis-plinskih-bojlera') {
+    return ['Pregled plamenika', 'Kemijsko ispiranje kamenca', 'Provjera pritiska'];
+  }
+  if (slug === 'strojno-ispiranje-radijatora') {
+    return ['Uklanjanje mulja i korozije', 'Poboljšanje protoka topline', 'Balansiranje sustava'];
+  }
+  if (slug === 'montaza-toplinskih-pumpi') {
+    return ['Provjera tehničkih preduvjeta', 'Montaža unutarnje i vanjske jedinice', 'Puštanje u rad'];
+  }
+  if (slug === 'servis-i-montaza-klima-uredaja') {
+    return ['Redovni servis i dezinfekcija', 'Provjera tlaka i rashladnog medija', 'Ugradnja novih sustava'];
+  }
+  if (slug === 'ugradnja-omeksivaca-vode') {
+    return ['Montaža na glavni dovod vode', 'Podešavanje rada i regeneracije', 'Zaštita bojlera i instalacija'];
+  }
+  if (slug === 'instalacije-centralnog-grijanja') {
+    return ['Izrada cijevnih instalacija', 'Montaža radijatora i termostata', 'Tlačne probe sustava'];
+  }
+  return ['Tehnička procjena', 'Uvid u stanje instalacija', 'Savjetovanje'];
+};
+
+const requests = getRequestsList(service.slug.current);
+
+// Image mapping with WebP demo assets
+const getImageSrc = (slug: string) => {
+  if (slug === 'servis-plinskih-bojlera') {
+    return '/demo-assets/demo-hero-ambience.webp';
+  }
+  if (slug === 'montaza-toplinskih-pumpi') {
+    return '/demo-assets/demo-hero-ambience.webp';
+  }
+  return '/demo-assets/demo-technical-piping-ambience.webp';
+};
+
+const imageSrc = getImageSrc(service.slug.current);
 ---
 
-<div class="bg-white rounded-xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between card-hover interactive-transition">
-  <div class="space-y-3">
-    <h3 class="text-xl font-bold text-slate-900">{service.title}</h3>
-    <p class="text-sm text-slate-600 line-clamp-3">{service.shortDescription}</p>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between card-hover interactive-transition relative">
+  <!-- Top image band -->
+  <div class="h-48 w-full overflow-hidden bg-slate-100 relative border-b border-slate-100">
+    <img 
+      src={imageSrc} 
+      alt={`Demo placeholder: ${service.title}`} 
+      class="w-full h-full object-cover object-center"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent"></div>
   </div>
-  <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
-    <a href={`/usluge/${service.slug.current}`} class="text-sm font-semibold text-orange-600 hover:text-orange-700 focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1">
-      Saznajte više &rarr;
-    </a>
-    <a href="/kontakt/" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-bold rounded bg-slate-900 text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900">
-      Upit
-    </a>
+
+  <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between space-y-5">
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <!-- Icon Tile (Lucide Icons) -->
+        <div class="bg-orange-50 border border-orange-100 text-orange-600 rounded-xl p-3 inline-block shadow-xs">
+          {service.slug.current === 'servis-plinskih-bojlera' && <Flame class="h-6 w-6" />}
+          {service.slug.current === 'strojno-ispiranje-radijatora' && <RefreshCw class="h-6 w-6" />}
+          {service.slug.current === 'montaza-toplinskih-pumpi' && <Wind class="h-6 w-6" />}
+          {service.slug.current === 'servis-i-montaza-klima-uredaja' && <Snowflake class="h-6 w-6" />}
+          {service.slug.current === 'ugradnja-omeksivaca-vode' && <Droplet class="h-6 w-6" />}
+          {service.slug.current === 'instalacije-centralnog-grijanja' && <Wrench class="h-6 w-6" />}
+          {!['servis-plinskih-bojlera', 'strojno-ispiranje-radijatora', 'montaza-toplinskih-pumpi', 'servis-i-montaza-klima-uredaja', 'ugradnja-omeksivaca-vode', 'instalacije-centralnog-grijanja'].includes(service.slug.current) && <HelpCircle class="h-6 w-6" />}
+        </div>
+        <!-- Top-right safe status badge -->
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-50 text-slate-500 border border-slate-200">
+          Informativno
+        </span>
+      </div>
+
+      <div class="space-y-2">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight">{service.title}</h3>
+        <p class="text-sm text-slate-600 leading-relaxed line-clamp-3">{service.shortDescription}</p>
+      </div>
+      
+      <div class="space-y-2 pt-2 border-t border-slate-100">
+        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Uobičajene tehničke potrebe:</span>
+        <ul class="space-y-2 text-xs text-slate-500">
+          {requests.map((req) => (
+            <li class="flex items-start gap-2">
+              <svg class="h-4 w-4 text-orange-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="font-medium text-slate-600">{req}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center gap-2">
+      <a href={`/usluge/${service.slug.current}`} class="text-sm font-bold text-slate-700 hover:text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1 transition-colors">
+        Saznajte više &rarr;
+      </a>
+      <a href="/kontakt/" class="inline-flex items-center justify-center px-4.5 py-2 border border-slate-200 text-xs font-bold rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors shadow-xs">
+        Pošaljite upit
+      </a>
+    </div>
   </div>
 </div>

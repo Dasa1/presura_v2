@@ -9,30 +9,36 @@ const navItems: NavItem[] = [
   { label: 'Problemi', href: '/problemi/' },
   { label: 'Lokacije', href: '/lokacije/' },
   { label: 'Cjenik', href: '/cjenik/' },
-  { label: 'Radovi', href: '/radovi/' }
+  { label: 'Reference', href: '/radovi/' },
+  { label: 'Kontakt', href: '/kontakt/' }
 ];
 
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="subtle-glass text-white border-b border-slate-800/80 sticky top-0 z-50">
+<header id="main-header" class="bg-white text-slate-900 border-b border-slate-200 sticky top-0 z-50 shadow-xs transition-shadow duration-300 ease-in-out">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <!-- Logo -->
       <div class="flex-shrink-0 flex items-center">
-        <a href="/" class="text-xl font-bold tracking-tight text-white hover:text-orange-500 interactive-transition focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1" aria-label="Presura Početna">
-          Presura
+        <a href="/" class="flex items-center gap-2 text-xl font-extrabold tracking-tight hover:text-orange-500 interactive-transition focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1" aria-label="Presura Početna">
+          <!-- Simple Orange Icon Mark -->
+          <svg class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="text-slate-900 tracking-wider font-extrabold">PRESURA</span>
         </a>
       </div>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex space-x-8 items-center" aria-label="Glavni izbornik">
+      <nav class="hidden md:flex space-x-6 items-center" aria-label="Glavni izbornik">
         {navItems.map(item => {
           const isActive = currentPath === item.href || currentPath.startsWith(item.href) && item.href !== '/';
           return (
             <a 
               href={item.href} 
-              class={`text-sm font-medium interactive-transition focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1.5 ${isActive ? 'text-orange-500' : 'text-slate-300 hover:text-white'}`}
+              class={`text-sm font-semibold interactive-transition focus-visible:ring-2 focus-visible:ring-orange-500 rounded p-1.5 ${isActive ? 'text-orange-500' : 'text-slate-600 hover:text-orange-500'}`}
               aria-current={isActive ? 'page' : undefined}
             >
               {item.label}
@@ -43,10 +49,10 @@ const currentPath = Astro.url.pathname;
         <button 
           type="button" 
           aria-disabled="true" 
-          class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded-lg bg-orange-600/50 text-slate-300 cursor-not-allowed select-none focus:outline-none min-h-[44px] min-w-[44px]"
+          class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded-lg bg-orange-500 text-white cursor-not-allowed select-none opacity-90 min-h-[44px] min-w-[44px]"
           aria-label="Nazovite za servis (Onemogućeno - placeholder)"
         >
-          Servis: PHONE_PLACEHOLDER
+          Telefon: PHONE_PLACEHOLDER
         </button>
       </nav>
 
@@ -57,7 +63,7 @@ const currentPath = Astro.url.pathname;
           id="mobile-menu-toggle" 
           aria-expanded="false" 
           aria-controls="mobile-menu" 
-          class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 min-h-[44px] min-w-[44px]"
+          class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 min-h-[44px] min-w-[44px]"
           aria-label="Otvori izbornik"
         >
           <svg class="h-6 w-6" id="menu-icon-hamburger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,28 +78,28 @@ const currentPath = Astro.url.pathname;
   </div>
 
   <!-- Mobile Nav Menu -->
-  <div class="hidden md:hidden bg-slate-900 border-t border-slate-800" id="mobile-menu" aria-label="Mobilni izbornik">
+  <div class="hidden md:hidden bg-white border-t border-slate-200" id="mobile-menu" aria-label="Mobilni izbornik">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
       {navItems.map(item => {
         const isActive = currentPath === item.href || currentPath.startsWith(item.href) && item.href !== '/';
         return (
           <a 
             href={item.href} 
-            class={`block px-3 py-3 rounded-md text-base font-medium focus-visible:ring-2 focus-visible:ring-orange-500 ${isActive ? 'text-orange-500 bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800'}`}
+            class={`block px-3 py-3 rounded-md text-base font-semibold focus-visible:ring-2 focus-visible:ring-orange-500 ${isActive ? 'text-orange-500 bg-slate-50' : 'text-slate-700 hover:text-orange-500 hover:bg-slate-50'}`}
             aria-current={isActive ? 'page' : undefined}
           >
             {item.label}
           </a>
         );
       })}
-      <div class="px-3 pt-4 border-t border-slate-800">
+      <div class="px-3 pt-4 border-t border-slate-200 pb-2">
         <button 
           type="button" 
           aria-disabled="true" 
-          class="w-full inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600/50 text-slate-300 cursor-not-allowed select-none focus:outline-none min-h-[44px]"
+          class="w-full inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-500 text-white cursor-not-allowed select-none opacity-90 min-h-[44px]"
           aria-label="Nazovite za servis (Onemogućeno - placeholder)"
         >
-          Servis: PHONE_PLACEHOLDER
+          Telefon: PHONE_PLACEHOLDER
         </button>
       </div>
     </div>
@@ -101,6 +107,7 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <script>
+  // Mobile Menu Toggle
   const toggleBtn = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const hamIcon = document.getElementById('menu-icon-hamburger');
@@ -115,5 +122,24 @@ const currentPath = Astro.url.pathname;
       hamIcon.classList.toggle('hidden');
       closeIcon.classList.toggle('hidden');
     });
+  }
+
+  // Scroll Shadow behavior
+  const header = document.getElementById('main-header');
+
+  if (header) {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        header.classList.add('shadow-md');
+        header.classList.remove('shadow-xs');
+      } else {
+        header.classList.add('shadow-xs');
+        header.classList.remove('shadow-md');
+      }
+    };
+
+    // Run on init in case page is already scrolled
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
   }
 </script>

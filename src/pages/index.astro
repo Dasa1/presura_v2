@@ -10,78 +10,251 @@ const problems = await sanityClient.fetch('*[_type == "problem"]');
 ---
 
 <Layout title="Početna | Servis grijanja i tehničke instalacije" description="Brz i pouzdan servis grijanja, instalacija i tehničkih usluga u vašoj regiji.">
-  <!-- Hero Section -->
-  <section class="py-16 md:py-24 text-center hero-gradient text-white rounded-2xl shadow-md border border-slate-950 px-6 sm:px-12 relative overflow-hidden">
-    <!-- Subtle visual layout pattern -->
-    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" aria-hidden="true"></div>
+  <!-- Hero Section (Cinematic Full-Width) -->
+  <section class="relative rounded-t-2xl overflow-hidden min-h-[500px] flex items-center justify-center px-6 sm:px-12 py-20 text-white shadow-xl border-x border-t border-slate-900 bg-cover bg-center bg-[url('/demo-assets/demo-hero-ambience.webp')]">
+    <!-- Dark overlay for readability -->
+    <div class="absolute inset-0 bg-slate-950/75 z-0" aria-hidden="true"></div>
     
-    <div class="max-w-3xl mx-auto space-y-6 relative z-10">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-950/50 border border-orange-500/30 text-orange-400">
-        Lokalni tehnički servis
-      </span>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-        Pouzdan servis grijanja i <span class="accent-gradient-text">tehničkih instalacija</span>
-      </h1>
-      <p class="text-base sm:text-lg text-slate-300 max-w-xl mx-auto leading-relaxed">
-        Brza dijagnostika, redovito održavanje i hitne intervencije. Stručnost i transparentne cijene uz zajamčenu kvalitetu.
-      </p>
-      
-      <div class="mt-8 max-w-md mx-auto rounded-xl overflow-hidden border border-slate-800/80 bg-slate-950/40 p-2 shadow-inner">
-        <img 
-          src="/demo-assets/demo-hero-ambience.webp" 
-          alt="Demo placeholder: Modern heating installation." 
-          class="rounded-lg w-full h-48 object-cover opacity-85 hover:opacity-100 interactive-transition"
-          width="448"
-          height="192"
-          loading="eager"
-        />
+    <!-- Subtle pattern -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-10 z-1" aria-hidden="true"></div>
+
+    <div class="max-w-4xl mx-auto text-center space-y-6 relative z-10">
+      <!-- Safe Pills -->
+      <div class="flex flex-wrap justify-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/20 border border-orange-500/30 text-orange-400">
+          Servis grijanja
+        </span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/20 border border-orange-500/30 text-orange-400">
+          Bojleri i radijatori
+        </span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/20 border border-orange-500/30 text-orange-400">
+          Dizalice topline
+        </span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/20 border border-orange-500/30 text-orange-400">
+          Informativna ponuda
+        </span>
       </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Servis bojlera, grijanja i <span class="text-orange-500">dizalica topline</span>
+      </h1>
       
+      <p class="text-base sm:text-lg lg:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed">
+        Pregled problema, informativna ponuda i servisni zahvati za bojlere, radijatore, dizalice topline i tehničke instalacije.
+      </p>
+
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-        <!-- Safe disabled CTA button -->
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3.5 border border-transparent text-base font-bold rounded-lg text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 min-h-[44px] interactive-transition shadow-lg shadow-orange-500/20">
+          Pošaljite upit za ponudu
+        </a>
         <button
           type="button"
           aria-disabled="true"
-          class="inline-flex items-center justify-center px-6 py-3 border border-orange-500/20 text-base font-bold rounded-lg bg-orange-600/30 text-orange-200 cursor-not-allowed select-none focus:outline-none min-h-[44px] interactive-transition"
-          aria-label="Nazovite dežurni servis (Onemogućeno - placeholder)"
+          class="inline-flex items-center justify-center px-6 py-3.5 border border-slate-700 text-base font-bold rounded-lg bg-slate-900/60 text-slate-200 cursor-not-allowed select-none focus:outline-none min-h-[44px] hover:bg-slate-900/80 interactive-transition"
         >
-          Servis: PHONE_PLACEHOLDER
+          Telefon: PHONE_PLACEHOLDER
         </button>
-        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700/60 text-base font-medium rounded-lg text-slate-200 bg-slate-900/60 hover:bg-slate-800/80 hover:text-white interactive-transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-500 min-h-[44px]">
-          Pošaljite upit za ponudu
-        </a>
       </div>
     </div>
   </section>
 
-  <!-- Trust Bar Component -->
-  <TrustBar />
+  <!-- Hero Process Strip -->
+  <div class="bg-slate-900 text-slate-300 border-x border-b border-slate-950 rounded-b-2xl p-6 sm:p-8 shadow-md mb-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center lg:text-left">
+        <!-- Step 1 -->
+        <div class="space-y-1.5 flex flex-col lg:flex-row items-center lg:items-start gap-3">
+          <div class="h-8 w-8 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 font-bold flex items-center justify-center shrink-0">1</div>
+          <div>
+            <div class="text-sm font-bold text-white leading-tight">Opišite problem</div>
+            <div class="text-xs text-slate-500">Unos detalja o kvaru</div>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="space-y-1.5 flex flex-col lg:flex-row items-center lg:items-start gap-3">
+          <div class="h-8 w-8 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 font-bold flex items-center justify-center shrink-0">2</div>
+          <div>
+            <div class="text-sm font-bold text-white leading-tight">Pregled zahtjeva</div>
+            <div class="text-xs text-slate-500">Tehnička evaluacija</div>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="space-y-1.5 flex flex-col lg:flex-row items-center lg:items-start gap-3">
+          <div class="h-8 w-8 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 font-bold flex items-center justify-center shrink-0">3</div>
+          <div>
+            <div class="text-sm font-bold text-white leading-tight">Informativna ponuda</div>
+            <div class="text-xs text-slate-500">Pred-kalkulacija troškova</div>
+          </div>
+        </div>
+        <!-- Step 4 -->
+        <div class="space-y-1.5 flex flex-col lg:flex-row items-center lg:items-start gap-3">
+          <div class="h-8 w-8 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 font-bold flex items-center justify-center shrink-0">4</div>
+          <div>
+            <div class="text-sm font-bold text-white leading-tight">Dogovor termina</div>
+            <div class="text-xs text-slate-500">Završna potvrda vlasnika</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Services Grid -->
+  <!-- Services Section with Snap-Scroll Carousel -->
   <section class="py-12 space-y-8">
     <div class="text-center max-w-xl mx-auto">
       <h2 class="text-3xl font-extrabold text-slate-900">Usluge koje nudimo</h2>
       <p class="mt-2 text-slate-600">Pregledajte naš spektar profesionalnih tehničkih usluga i servisa.</p>
     </div>
     
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.slice(0, 3).map((service: any) => (
-        <ServiceCard service={service} />
-      ))}
+    <div class="relative">
+      <!-- Gradient overlay visual hint (only on right side for peek scroll) -->
+      <div class="absolute right-0 top-0 bottom-6 w-20 bg-gradient-to-l from-[#F4F7FA] to-transparent pointer-events-none z-10 hidden md:block"></div>
+
+      <div 
+        id="services-scroll-container"
+        class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 no-scrollbar focus:outline-none"
+        tabindex="0"
+        role="region"
+        aria-label="Vrtuljak usluga"
+      >
+        {services.map((service: any) => (
+          <div class="snap-start shrink-0 w-[85%] md:w-[45%] lg:w-[31.5%]">
+            <ServiceCard service={service} />
+          </div>
+        ))}
+      </div>
+
+      <!-- Scroll navigation controls & helper text -->
+      <div class="flex items-center justify-between mt-2 px-2">
+        <span class="text-xs text-slate-500 flex items-center gap-1.5 font-medium select-none" id="scroll-helper-msg">
+          <svg class="h-4 w-4 text-orange-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+          Pomaknite za više usluga
+        </span>
+        
+        <div class="hidden sm:flex gap-2">
+          <button 
+            type="button" 
+            id="scroll-left-btn"
+            class="p-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center shadow-3xs"
+            aria-label="Pomaknite ulijevo"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            type="button" 
+            id="scroll-right-btn"
+            class="p-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center shadow-3xs"
+            aria-label="Pomaknite udesno"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Problems Grid -->
+  <!-- Problems Section with Snap-Scroll Carousel -->
   <section class="py-12 space-y-8 border-t border-slate-200">
     <div class="text-center max-w-xl mx-auto">
       <h2 class="text-3xl font-extrabold text-slate-900">Prepoznajte simptome kvara</h2>
       <p class="mt-2 text-slate-600">Saznajte što uzrokuje problem s grijanjem i kako ga riješiti.</p>
     </div>
     
-    <div class="grid gap-6 sm:grid-cols-2">
-      {problems.slice(0, 2).map((problem: any) => (
-        <ProblemCard problem={problem} />
-      ))}
+    <div class="relative">
+      <!-- Gradient overlay visual hint (only on right side for peek scroll) -->
+      <div class="absolute right-0 top-0 bottom-6 w-20 bg-gradient-to-l from-[#F4F7FA] to-transparent pointer-events-none z-10 hidden md:block"></div>
+
+      <div 
+        id="problems-scroll-container"
+        class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 no-scrollbar focus:outline-none"
+        tabindex="0"
+        role="region"
+        aria-label="Vrtuljak simptoma kvara"
+      >
+        {problems.map((problem: any) => (
+          <div class="snap-start shrink-0 w-[85%] md:w-[48%] lg:w-[48%]">
+            <ProblemCard problem={problem} />
+          </div>
+        ))}
+      </div>
+
+      <!-- Scroll navigation controls & helper text -->
+      <div class="flex items-center justify-between mt-2 px-2">
+        <span class="text-xs text-slate-500 flex items-center gap-1.5 font-medium select-none" id="problems-scroll-helper-msg">
+          <svg class="h-4 w-4 text-orange-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+          Pomaknite za više simptoma
+        </span>
+        
+        <div class="hidden sm:flex gap-2">
+          <button 
+            type="button" 
+            id="problems-scroll-left-btn"
+            class="p-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center shadow-3xs"
+            aria-label="Pomaknite ulijevo"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            type="button" 
+            id="problems-scroll-right-btn"
+            class="p-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center shadow-3xs"
+            aria-label="Pomaknite udesno"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </section>
+
+  <script>
+    // Services Snap Carousel
+    const servicesContainer = document.getElementById('services-scroll-container');
+    const sBtnLeft = document.getElementById('scroll-left-btn');
+    const sBtnRight = document.getElementById('scroll-right-btn');
+
+    if (servicesContainer && sBtnLeft && sBtnRight) {
+      sBtnLeft.addEventListener('click', () => {
+        const card = servicesContainer.firstElementChild as HTMLElement;
+        const cardWidth = card ? card.offsetWidth + 24 : 350;
+        servicesContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+      });
+
+      sBtnRight.addEventListener('click', () => {
+        const card = servicesContainer.firstElementChild as HTMLElement;
+        const cardWidth = card ? card.offsetWidth + 24 : 350;
+        servicesContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      });
+    }
+
+    // Problems Snap Carousel
+    const problemsContainer = document.getElementById('problems-scroll-container');
+    const pBtnLeft = document.getElementById('problems-scroll-left-btn');
+    const pBtnRight = document.getElementById('problems-scroll-right-btn');
+
+    if (problemsContainer && pBtnLeft && pBtnRight) {
+      pBtnLeft.addEventListener('click', () => {
+        const card = problemsContainer.firstElementChild as HTMLElement;
+        const cardWidth = card ? card.offsetWidth + 24 : 450;
+        problemsContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+      });
+
+      pBtnRight.addEventListener('click', () => {
+        const card = problemsContainer.firstElementChild as HTMLElement;
+        const cardWidth = card ? card.offsetWidth + 24 : 450;
+        problemsContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      });
+    }
+  </script>
 </Layout>

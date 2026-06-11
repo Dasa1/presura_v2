@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
 import { sanityClient } from '../../sanity/client';
 import seedData from '../../sanity/seed.json';
@@ -23,6 +25,10 @@ interface Props {
 
 const { location } = Astro.props;
 
+if (!location) {
+  return Astro.redirect('/404');
+}
+
 // Resolve related services references
 const relatedServices = (location.relatedServices || []).map((refObj: any) => {
   return seedData.services.find(s => s._id === refObj._ref);
@@ -30,9 +36,10 @@ const relatedServices = (location.relatedServices || []).map((refObj: any) => {
 
 // Resolve siteSettings
 const siteSettings = seedData.siteSettings;
+const introText = (location.localIntro && location.localIntro.includes('LOCAL_CONTEXT_PLACEHOLDER_')) ? "Područje rada čeka vlasničku potvrdu. Lokalni dokazi i reference nisu još verificirani." : (location.localIntro || "Područje rada čeka vlasničku potvrdu.");
 ---
 
-<Layout title={`Tehničke Usluge i Servis Grijanja - ${location.cityName}`} description={location.localIntro}>
+<Layout title={`Tehničke Usluge i Servis Grijanja - ${location.cityName}`} description={introText}>
   <article class="max-w-4xl mx-auto space-y-12">
     <!-- Header Section -->
     <header class="space-y-4 border-b border-slate-200 pb-8">
@@ -45,25 +52,30 @@ const siteSettings = seedData.siteSettings;
         Servis Grijanja i Bojlera u {location.cityName}
       </h1>
       <p class="text-xl text-slate-600 leading-relaxed font-light">
-        {location.localIntro}
+        {introText}
       </p>
     </header>
 
     <!-- Local Proof Blocks -->
     <section class="space-y-6">
-      <h2 class="text-2xl font-bold text-slate-900">Naš rad na terenu u {location.cityName}</h2>
+      <h2 class="text-2xl font-bold text-slate-900">Područje rada u {location.cityName}</h2>
       <div class="grid gap-6">
-        {location.localProofBlocks?.map((proof: any) => (
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-3">
-            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
-              {proof.title}
-            </h3>
-            <p class="text-slate-700 leading-relaxed pl-5">
-              {proof.description}
-            </p>
-          </div>
-        ))}
+        {location.localProofBlocks?.map((proof: any) => {
+          const isPlaceholder = proof.description.includes('LOCAL_PROOF_PLACEHOLDER_');
+          const displayTitle = isPlaceholder ? "Čeka potvrdu" : proof.title;
+          const displayDescription = isPlaceholder ? "Lokalni dokazi i reference nisu još verificirani." : proof.description;
+          return (
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-3">
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                {displayTitle}
+              </h3>
+              <p class="text-slate-700 leading-relaxed pl-5">
+                {displayDescription}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </section>
 
@@ -89,17 +101,17 @@ const siteSettings = seedData.siteSettings;
 
     <!-- Localized CTA -->
     <section class="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 text-center space-y-6">
-      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Trebate pouzdanog servisera u mjestu {location.cityName}?</h2>
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Trebate informativnu ponudu za mjesto {location.cityName}?</h2>
       <p class="text-slate-300 max-w-xl mx-auto">
-        Obavite redovni pregled i osigurajte mirnu sezonu grijanja. Naš tim pokriva cijelo područje {location.cityName} s brzim odzivom.
+        Pregledajte naše usluge i pošaljite upit kako bismo Vam pripremili ponudu za servis ili instalacije.
       </p>
       <div class="flex flex-wrap justify-center gap-4 pt-4">
-        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 focus:outline-none transition-colors">
-          Zatražite dolazak u {location.cityName}
+        <a href="/kontakt/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg bg-orange-650 text-white hover:bg-orange-700 focus:outline-none transition-colors">
+          Pošaljite upit
         </a>
-        <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-bold rounded-lg text-slate-300 hover:bg-slate-800 transition-colors">
-          Kontakt: {siteSettings.phoneDisplay}
-        </a>
+        <button type="button" aria-disabled="true" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-bold rounded-lg text-slate-300 cursor-not-allowed select-none opacity-90">
+          Telefon: {siteSettings.phoneDisplay}
+        </button>
       </div>
     </section>
   </article>

@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --color-brand-primary: #0f172a; /* Slate 900 */
-  --color-brand-accent: #f97316;  /* Orange 500 */
-  --color-brand-accent-hover: #ea580c; /* Orange 600 */
-  --color-brand-bg-dark: #0b0f19; /* Deep Navy */
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
+  --color-brand-primary: #101827; /* Dark Slate / Charcoal */
+  --color-brand-accent: #FF8A0A;  /* Primary Orange */
+  --color-brand-accent-hover: #EA580C; /* Orange Hover */
+  --color-brand-bg-warm: #F4F7FA; /* Premium soft gray/cream page bg */
+  --color-brand-card: #FFFFFF; /* Pure White card background */
+  --color-brand-dark-text: #101827; /* Dark body/title text */
+  --color-brand-muted-text: #64748B; /* Muted body text */
 }
 
 html,
@@ -14,10 +15,10 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: #f8fafc; /* Slate 50 */
-  color: #1e293b; /* Slate 800 */
+  background-color: var(--color-brand-bg-warm);
+  color: var(--color-brand-primary);
 }
 
 /* Accessible focus styling */
@@ -26,27 +27,27 @@ body {
   outline-offset: 2px;
 }
 
-/* Glassmorphism Boundary check: Ensure accessibility and contrast remain strong */
+/* Glassmorphism overlays */
 .subtle-glass {
-  background-color: rgba(15, 23, 42, 0.85); /* 85% opacity Slate 900 for solid contrast */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(16, 24, 39, 0.76); /* Highly dark overlay for readability */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .subtle-glass-light {
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background-color: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
-/* Gradients */
+/* Premium Industrial Gradients */
 .hero-gradient {
-  background: linear-gradient(135deg, #0b0f19 0%, #1e1b4b 50%, #0f172a 100%);
+  background: linear-gradient(135deg, #0a0f1d 0%, #111827 55%, #1f2937 100%);
 }
 
 .accent-gradient-text {
-  background: linear-gradient(to right, #f97316, #fdba74);
+  background: linear-gradient(to right, #FF8A0A, #FF7A00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -59,8 +60,8 @@ body {
 .card-hover {
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
-    border-color: rgba(249, 115, 22, 0.2);
+    box-shadow: 0 12px 20px -3px rgba(16, 24, 39, 0.05), 0 4px 6px -2px rgba(16, 24, 39, 0.05);
+    border-color: rgba(255, 138, 10, 0.35);
   }
 }
 
@@ -73,3 +74,13 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Hide scrollbars for snap layout containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
