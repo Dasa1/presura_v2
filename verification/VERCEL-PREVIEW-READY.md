@@ -2,8 +2,8 @@
 
 - **Date:** 2026-06-11
 - **Target Branch**: `demo-visual-polish`
-- **Source Commit**: `3a79e51`
-- **Deployment Status**: **FAIL (IN PROGRESS)** (Vercel CLI connection established, but first deployment failed with pnpm install exit code 1. Adding packageManager compatibility fix in package.json to resolve Vercel pnpm detection issue.)
+- **Source Commit**: `d6117d4`
+- **Deployment Status**: **READY FOR DEPLOYMENT** (Blocker resolved, see [vercel-preview-demo.md](file:///d:/Presura_v2/build-notes/vercel-preview-demo.md))
 
 ---
 
@@ -29,8 +29,9 @@
 ---
 
 ## 2. Staging Environment Evidence Logs
-> [!IMPORTANT]
-> The initial deployment failed due to Vercel pnpm install compatibility. We are currently committing a compatibility fix adding `"packageManager": "pnpm@11.5.2"` to [package.json](file:///d:/Presura_v2/package.json) to resolve this.
+> [!TIP]
+> The staging deployment blocker (pnpm lockfile version mismatch) has been resolved. The branch is ready to be deployed to Vercel for preview QA.
+
 
 * **Robots visibility check**: NOT VERIFIED
 * **Inquiry form state check**: NOT VERIFIED
