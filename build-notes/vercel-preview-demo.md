@@ -66,6 +66,8 @@ All other dependencies resolved to identical versions.
 - **Manual QA Testing (2026-06-12)**:
   - Homepage Layout, Sticky Header, and Section Snap-scrolls: **PASS**
   - Location Pages (`/lokacije/*`): **PASS**
+  - Service Detail Pages (`/usluge/*`): **PASS** (prerendering issue fixed and verified on preview URL)
+  - Problem Detail Pages (`/problemi/*`): **PASS** (prerendering issue fixed and verified on preview URL)
   - Contact/demo-disabled behavior: **PASS** (Inputs disabled, orange banner active)
   - Mobile Throttled Performance: **PARTIAL / KNOWN LIMITATION** (Not a demo blocker, but NOT launch-approved. Throttling disabled is acceptable for owner-facing demo. Performance optimization deferred to P1 before public launch).
   - Lighthouse / Core Web Vitals: **NOT VERIFIED / NOT MEASURED**

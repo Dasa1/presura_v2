@@ -18,7 +18,8 @@ This document serves as the canonical summary of the project state at the end of
 
 ## 2. Vercel Preview Status
 - **Vercel Preview Deployment URL**: [https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app](https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app)
-- **Visual Staging State**: **PASS (Needs Redeploy)** (Local build verified; Vercel preview needs deployment update to load route fixes for `/usluge/[slug]` and `/problemi/[slug]`).
+- **Visual Staging State**: **PASS** (Successful compilation, static rendering, dynamic routes verified, layout verified, details routes fixed and checked).
+
 
 ---
 

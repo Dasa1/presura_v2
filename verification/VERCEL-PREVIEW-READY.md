@@ -2,8 +2,8 @@
 
 - **Date:** 2026-06-12
 - **Target Branch**: `demo-visual-polish`
-- **Source Commit**: `3b38c4b` (Current baseline, needs redeploy for route fixes)
-- **Deployment Status**: **NEEDS REDEPLOY / NOT VERIFIED** (Visual preview live but has runtime blockers on `/usluge/*` and `/problemi/*` until next commit is built on Vercel)
+- **Source Commit**: `a558be2`
+- **Deployment Status**: **PASS** (Deployed successfully at https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app)
 - **Public Launch Status**: **NOT APPROVED**
 - **Live Integrations**: **NOT CONNECTED**
 - **Indexing/Schema**: **DISABLED / NOT APPROVED**
@@ -28,10 +28,11 @@
 | 11 | Structured Data | No search engine LocalBusiness or HVACBusiness schemas are injected. | **PASS** | Checked `SchemaMarkup.astro` & `seed.json` (schemaEnabled = false) |
 | 12 | Safe NAP Wording | Placeholder phone, email, and address displays correctly without real values. | **PASS** | Verified placeholder labels in `seed.json` & homepage rendering |
 | 13 | Safe Marketing Claims | No Vaillant/Bosch claims or hitne intervencije/24-7 claims are visible. | **PASS** | Source code compliance verified |
-| 14 | Vercel Build Success | Dashboard shows successful compilation logs for the preview build. | **NEEDS REDEPLOY** | Build succeeded for previous commit, but requires redeployment for fixes |
+| 14 | Vercel Build Success | Dashboard shows successful compilation logs for the preview build. | **PASS** | Vercel deployment succeeded |
 | 15 | Mobile Throttled Performance | Performance check under artificial 3G throttling. | **PARTIAL / KNOWN LIMITATION** | Not launch-approved; acceptable for owner-facing demo. |
-| 16 | Service Detail Routes | Clicking card on `/usluge` renders `/usluge/[slug]` cleanly without TypeError. | **PASS (Locally Verified)** | Fixed SSR/prerender bug; locally compiled |
-| 17 | Problem Detail Routes | Clicking card on `/problemi` renders `/problemi/[slug]` cleanly without TypeError. | **PASS (Locally Verified)** | Fixed SSR/prerender bug; locally compiled |
+| 16 | Service Detail Routes | Clicking card on `/usluge` renders `/usluge/[slug]` cleanly without TypeError. | **PASS** | Fixed SSR/prerender bug; verified on Vercel preview |
+| 17 | Problem Detail Routes | Clicking card on `/problemi` renders `/problemi/[slug]` cleanly without TypeError. | **PASS** | Fixed SSR/prerender bug; verified on Vercel preview |
+
 
 
 ---
