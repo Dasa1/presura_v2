@@ -18,11 +18,12 @@ This document serves as the canonical summary of the project state at the end of
 
 ## 2. Vercel Preview Status
 - **Vercel Preview Deployment URL**: [https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app](https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app)
-- **Visual Staging State**: **PASS** (Successful compilation, static rendering, dynamic routes verified, layout verified).
+- **Visual Staging State**: **PASS (Needs Redeploy)** (Local build verified; Vercel preview needs deployment update to load route fixes for `/usluge/[slug]` and `/problemi/[slug]`).
 
 ---
 
 ## 3. What Is Done
+- Fixed runtime blockers on `/usluge/[slug]` and `/problemi/[slug]` by adding `export const prerender = true` and robust undefined guards to redirect to `/454` or `/404` safely.
 - Solved package manager lockfile compatibility blocker (downgraded dependency parameters to native pnpm v9 support).
 - Formulated staging-protected deployment to Vercel Preview.
 - Conducted full manual user QA testing on layout structure, location details, headers, scroll effects, and visual overlays.
@@ -30,6 +31,7 @@ This document serves as the canonical summary of the project state at the end of
 - Retained robots meta tag (`noindex, nofollow`) indexation blocks.
 - Kept JSON-LD structured schemas disabled (`schemaEnabled: false`).
 - Documented full phase retrospective, checklist framework, and next-phase implementation plans.
+
 
 ---
 

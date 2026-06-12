@@ -49,6 +49,16 @@ All other dependencies resolved to identical versions.
 - Indexing/schema: **DISABLED / NOT APPROVED**
 - Contact form state: **DEMO-DISABLED**
 
+## Post-Demo Blocker: Route Runtime Blockers Fix (2026-06-12)
+* **Bug 1 (Services):** `/usluge/[slug]` crashed with `Cannot read properties of undefined (reading 'relatedProblems')` when clicked on service cards.
+* **Bug 2 (Problems):** `/problemi/[slug]` crashed with `Cannot read properties of undefined (reading 'recommendedService')` when clicked on problem cards.
+* **Root Cause:** Both pages lacked the `export const prerender = true;` flag. In server-side rendering (SSR) mode (default under `output: 'server'`), `getStaticPaths` is ignored at request time, causing `Astro.props` (which holds `service` and `problem`) to be undefined.
+* **Fix Applied:**
+  - Added `export const prerender = true;` to both `/usluge/[slug].astro` and `/problemi/[slug].astro`.
+  - Added robust null/undefined guards: checks `if (!service)` and `if (!problem)` to fallback/redirect safely to `/404` instead of throwing runtime TypeErrors.
+  - Added safe navigation filters for `recommendedService` lookup.
+  - Verified compilation and static file generation locally using `pnpm run build`.
+
 ## Deployment & QA History
 - **2026-06-11**: Triggered Vercel Preview Deployment via CLI.
 - **Result**: **PASS** (Successful compilation/deployment).

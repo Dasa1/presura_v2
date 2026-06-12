@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
 import { sanityClient } from '../../sanity/client';
 import seedData from '../../sanity/seed.json';
@@ -17,10 +19,14 @@ interface Props {
 
 const { problem } = Astro.props;
 
+if (!problem) {
+  return Astro.redirect('/404');
+}
+
 // Resolve recommended service reference
-const recommendedService = seedData.services.find(
-  s => s._id === problem.recommendedService._ref
-);
+const recommendedService = problem.recommendedService?._ref
+  ? seedData.services.find(s => s._id === problem.recommendedService._ref)
+  : null;
 
 // Resolve siteSettings
 const siteSettings = seedData.siteSettings;
