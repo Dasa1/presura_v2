@@ -39,9 +39,32 @@ All other dependencies resolved to identical versions.
 - `pnpm-lock.yaml` (regenerated in v9-compatible format)
 
 ## Safety Boundaries Maintained
-- No indexing enabled
+- No indexing enabled / NOT APPROVED
 - No live secrets configured
 - No custom domains connected
 - No production promotion
-- No source/UI/content changes
-- Public launch remains NOT APPROVED
+- No source/UI/content changes (any proposed optimization patches have been reverted)
+- Public launch remains **NOT APPROVED**
+- Live integrations: **NOT CONNECTED**
+- Indexing/schema: **DISABLED / NOT APPROVED**
+- Contact form state: **DEMO-DISABLED**
+
+## Deployment & QA History
+- **2026-06-11**: Triggered Vercel Preview Deployment via CLI.
+- **Result**: **PASS** (Successful compilation/deployment).
+- **Preview URL**: [https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app](https://presurav2-f74xx7xy7-dasas-projects-60f4ac4f.vercel.app)
+- **Manual QA Testing (2026-06-12)**:
+  - Homepage Layout, Sticky Header, and Section Snap-scrolls: **PASS**
+  - Location Pages (`/lokacije/*`): **PASS**
+  - Contact/demo-disabled behavior: **PASS** (Inputs disabled, orange banner active)
+  - Mobile Throttled Performance: **PARTIAL / KNOWN LIMITATION** (Not a demo blocker, but NOT launch-approved. Throttling disabled is acceptable for owner-facing demo. Performance optimization deferred to P1 before public launch).
+  - Lighthouse / Core Web Vitals: **NOT VERIFIED / NOT MEASURED**
+
+> [!IMPORTANT]
+> **Mobile Performance & Throttling Note:**
+> Artificial 3G throttling showed elevated LCP/load timing, likely related to image LCP and repeated image validation requests. With throttling disabled, mobile preview was acceptable for owner-facing demo review. Performance optimization is deferred to P1 before public launch.
+> 
+> **Indexation & Access Protection Note:**
+> The `noindex, nofollow` robots tag reduces indexing risk on public search engines, but it is not a security/access-control mechanism. Vercel access protection (Authentication) is required to restrict unauthorized users from opening the preview URL.
+
+

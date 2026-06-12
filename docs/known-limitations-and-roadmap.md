@@ -17,6 +17,8 @@ The MVP is strictly limited to the approved technical-service website scope.
 | Provider account ownership/access unknown | NOT VERIFIED | Handover cannot be completed | Yes for handover | Complete `/docs/account-access-handover.md` |
 | Supabase retention automation/manual process not implemented | NOT VERIFIED | Privacy process incomplete | Launch blocker unless manually approved | Implement or document manual process |
 | Performance & A11y Verification (Lighthouse Automation & Screen Readers) | NOT VERIFIED | Real-world validation metrics remain targets | No (targets only) | Validate on production environment |
+| Mobile Throttled Performance | PARTIAL / KNOWN LIMITATION | Elevated LCP and loading timing under artificial 3G throttling | No for internal demo; Yes before public launch (P1) | Defer optimization to P1 phase |
+
 
 
 ## Explicitly out of MVP
